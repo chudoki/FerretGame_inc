@@ -14,13 +14,13 @@ class Ferret extends Phaser.Physics.Matter.Sprite {
     }
     update(){
         
-        if(keyLEFT.isDown){
+        if(keyLEFT.isDown || keyA.isDown){
             this.setVelocityX(-this.playerSpeed);
         }
-        if(keyRIGHT.isDown){
+        if(keyRIGHT.isDown || keyD.isDown){
             this.setVelocityX(this.playerSpeed);
         }
-        if(keyUP.isDown){
+        if(keyUP.isDown || keyW.isDown){
             this.setVelocityY(-this.playerSpeed*2);
         }
         this.setAngle(0);

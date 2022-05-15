@@ -6,26 +6,36 @@ class Level1 extends Phaser.Scene {
     preload() {
         this.load.image('block', 'assets/sprites/block.png');
         this.load.image('platform', 'assets/sprites/platform.png');
+        this.load.image('platformLg', 'assets/sprites/platformLg.png');
     }
 
     create() {
+        // input keys
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
         keyUP = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
-        keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
-        keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
+        keyA = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.A);
+        keyD = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.D);
+        keyW = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.W);
+        
+
+        // camera
+        this.matter.world.setBounds(0, 0,2000,1600);
+        this.cameras.main.setBounds(0, 0,2000,1600);
         
         
-        
-        this.block = new Ferret(this, 400, 100, 'block').setScale(.2);
-        this.block.sleepThreshold = -1;
-        var ground = this.matter.add.image(400, 850, 'platform', null, { restitution: 0.4, isStatic: true });
+        this.player = new Ferret(this, 400, 100, 'block').setScale(.1);
+        this.player.sleepThreshold = -1;
+        this.P1 = new Platform(this, 400, 700, 'platform', null).setStatic(true);
+        this.P2 = new Platform(this, 1500, 400, 'platform', null).setStatic(true);
+        this.P2 = new Platform(this, 1100, 800, 'platformLg', null).setStatic(true);
+        this.cameras.main.startFollow(this.player);
 
     }
 
     update() {
-        //this.block.moveLeft();
-        this.block.update();
+        
+        this.player.update();
     }
 
 }

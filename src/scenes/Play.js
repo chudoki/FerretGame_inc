@@ -25,7 +25,8 @@ class Level1 extends Phaser.Scene {
         
         
         this.player = new Ferret(this, 400, 100, 'block').setScale(.1);
-        this.player.sleepThreshold = -1;
+        this.player.body.sleepThreshold = -1;
+
         this.P1 = new Platform(this, 400, 700, 'platform', null).setStatic(true);
         this.P2 = new Platform(this, 1500, 400, 'platform', null).setStatic(true);
         this.P2 = new Platform(this, 1100, 800, 'platformLg', null).setStatic(true);

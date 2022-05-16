@@ -9,8 +9,8 @@ let config = {
         matter: {
             gravity: {x: 0, y: 4},
             debug: true,
-
-            enableSleeping: false,
+            fps: 10,
+            enableSleeping: true,
             setBounds: {
                 left: true,
                 right: true,

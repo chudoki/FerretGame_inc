@@ -4,7 +4,7 @@ class Level1 extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image('block', 'assets/sprites/block.png');
+        this.load.image('ferret', 'assets/sprites/ferret player.png');
         this.load.image('platform', 'assets/sprites/platform.png');
         this.load.image('platformLg', 'assets/sprites/platformLg.png');
     }
@@ -24,18 +24,12 @@ class Level1 extends Phaser.Scene {
         this.cameras.main.setBounds(0, 0,2000,1600);
         
         
-        this.player = new Ferret(this, 400, 100, 'block').setScale(.1);
+        this.player = new Ferret(this, 400, 100, 'ferret').setScale(-.25,.25);
         this.player.body.sleepThreshold = -1;
 
-        this.blocky = this.matter.add.stack(500,100,2,1,100,100,function (x, y){
-   return Phaser.Physics.Matter.Matter.Bodies.rectangle(x,y,20,20,500)
-        }); 
-        Phaser.Physics.Matter.Matter.Composite.add(this.blocky,this.player.body);
-       Phaser.Physics.Matter.Matter.Composites.chain(this.blocky,0,0,0,0); 
-       
-        this.P1 = new Platform(this, 400, 700, 'platform', null).setStatic(true);
-        this.P2 = new Platform(this, 1500, 400, 'platform', null).setStatic(true);
-        this.P2 = new Platform(this, 1100, 800, 'platformLg', null).setStatic(true);
+        this.P1 = new Platform(this, 400, 700, 'platform', null).setStatic(true).setFriction(2);
+        this.P2 = new Platform(this, 1500, 400, 'platform', null).setStatic(true).setFriction(2);
+        this.P2 = new Platform(this, 1100, 800, 'platformLg', null).setStatic(true).setFriction(2);
         this.cameras.main.startFollow(this.player);
 
     }

@@ -5,6 +5,5 @@ class Platform extends Phaser.Physics.Matter.Sprite {
         
     }
     create(){
-        this.restitution = 0.4;
     }
 }

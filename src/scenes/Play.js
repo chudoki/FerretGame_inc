@@ -25,6 +25,11 @@ class Level1 extends Phaser.Scene {
         
         
         this.player = new Ferret(this, 400, 100, 'block').setScale(.1);
+        this.blocky = this.matter.add.stack(500,100,2,1,100,100,function (x, y){
+   return Phaser.Physics.Matter.Matter.Bodies.rectangle(x,y,20,20,500)
+        }); 
+        Phaser.Physics.Matter.Matter.Composite.add(this.blocky,this.player.body);
+       Phaser.Physics.Matter.Matter.Composites.chain(this.blocky,0,0,0,0); 
         this.player.sleepThreshold = -1;
         this.P1 = new Platform(this, 400, 700, 'platform', null).setStatic(true);
         this.P2 = new Platform(this, 1500, 400, 'platform', null).setStatic(true);

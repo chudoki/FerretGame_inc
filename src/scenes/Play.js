@@ -22,34 +22,19 @@ class Level1 extends Phaser.Scene {
         
 
         // camera
-        this.matter.world.setBounds(0, 0, width, height);
-        this.cameras.main.setBounds(0, 0, width, height);
+       this.matter.world.setBounds(0, 0,width,height);
+       this.cameras.main.setBounds(0, 0,width,height);
         
        var sus = this.matter.world.nextGroup(true);
         
-        this.player = new Ferret(this, 400, 100, 'ferret').setScale(.15,.15).setCollisionGroup(sus);
-        this.player.body.sleepThreshold = -1;
-        this.player2 = new Ferret(this, 600, 100, 'ferret').setScale(.15,.15).setCollisionGroup(sus);
-        this.player2.body.sleepThreshold = -1;
-        this.restov = this.matter.add.stack(300,50,5,1,0,0,function(x,y){
-            return Phaser.Physics.Matter.Matter.Bodies.rectangle(x-20,y,100,75,{
-                collisionFilter: {group: sus },
-                chamfer: 5,
-                density: 0.0005,
-                frictionAir: 0.05
-            });
-        });
-     // Phaser.Physics.Matter.Matter.Composite.add(this.restov,this.player.body);
-
-        this.matter.add.chain(this.restov,1,0,0,0,{
-            stiffness: 1,
-            angularStiffness: .8,
-            length:0,
-        });
-        this.matter.add.joint(this.player,
-            Phaser.Physics.Matter.Matter.Composite.allBodies(this.restov)[0],0,1,{angularStiffness: 10});
-            this.matter.add.joint(this.player2,
-                Phaser.Physics.Matter.Matter.Composite.allBodies(this.restov)[4],0,1,{angularStiffness: 10});
+       this.player = new Ferret(this, 500, height-400, 'ferret').setScale(.15,.15).setCollisionGroup(sus);
+       this.player.body.sleepThreshold = -1;
+       this.floor = this.matter.add.rectangle(width/2,height-50,width,100,{
+          
+           chamfer:5
+       });
+       this.floor2 = this.add.rectangle(width/2,height-50,width,100,0xdda15e);
+       this.floor.sleepThreshold = -1;
         this.P1 = new Platform(this, 400, 700, 'platform', null).setStatic(true).setFriction(2);
         this.P2 = new Platform(this, 1500, 400, 'platform', null).setStatic(true).setFriction(2);
         this.P2 = new Platform(this, 1100, 800, 'platformLg', null).setStatic(true).setFriction(2);

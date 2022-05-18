@@ -10,6 +10,8 @@ class Level1 extends Phaser.Scene {
     }
 
     create() {
+        let height = 1600;
+        let width = 9000;
         // input keys
         keyLEFT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.LEFT);
         keyRIGHT = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.RIGHT);
@@ -20,8 +22,8 @@ class Level1 extends Phaser.Scene {
         
 
         // camera
-        this.matter.world.setBounds(0, 0,2000,1600);
-        this.cameras.main.setBounds(0, 0,2000,1600);
+        this.matter.world.setBounds(0, 0, width, height);
+        this.cameras.main.setBounds(0, 0, width, height);
         
        var sus = this.matter.world.nextGroup(true);
         

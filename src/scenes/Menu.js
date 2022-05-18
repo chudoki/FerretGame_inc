@@ -4,20 +4,19 @@ class Menu extends Phaser.Scene {
     }
         preload(){
           
-           this.load.image('playButton', 'assets/buttons/playButton.png');
-           this.load.image('howToButton', 'assets/buttons/howButton.png');
+           this.load.image('playButton', 'assets/buttons/levelsButton.png');
+           this.load.image('howToButton', 'assets/buttons/testingButton.png');
     
         }
         
         
         create(){
            // background
-           this.background = this.add.tileSprite(0, 0, 300, 256, 'bg').setOrigin(0,0).setScale(3,3.6);
-           
+           this.game.backgroundColor = "#4488AA";
            // button
-           this.button = this.add.image(game.canvas.width/2, game.canvas.height/1.9, 'playButton').setScale(1.5);
+           this.button = this.add.image(game.canvas.width/2, game.canvas.height/1.9, 'playButton').setScale(.5);
            this.button.setInteractive();
-           this.howButton = this.add.image(game.canvas.width/2, game.canvas.height/1.9 + this.button.height*2, 'howToButton').setScale(1.5);
+           this.howButton = this.add.image(game.canvas.width/2, game.canvas.height/1.9 + this.button.height, 'howToButton').setScale(.5);
            this.howButton.setInteractive();
            this.add.image(game.canvas.width/2, game.canvas.height/3.5, 'backPlate')
            // title
@@ -68,7 +67,6 @@ class Menu extends Phaser.Scene {
               this.scene.start('FerretCageScene');
               this.howStart = false;
            }
-           this.background.tilePositionY += .2;
            this.button.on("pointerdown", () => {
               this.start = true;
            });

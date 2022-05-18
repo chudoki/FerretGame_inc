@@ -18,13 +18,12 @@ class Menu extends Phaser.Scene {
            this.button.setInteractive();
            this.howButton = this.add.image(game.canvas.width/2, game.canvas.height/1.9 + this.button.height, 'howToButton').setScale(.5);
            this.howButton.setInteractive();
-           this.add.image(game.canvas.width/2, game.canvas.height/3.5, 'backPlate')
            // title
-           this.add.text(game.canvas.width/2, game.canvas.height/5.5, "Slug", {
+           this.add.text(game.canvas.width/2, game.canvas.height/5.5, "Hunt for ", {
               fontFamily: 'Arial',
               fontSize: '100px',
               }).setOrigin(0.5,0);
-           this.add.text(game.canvas.width/2, game.canvas.height/3.3, "Fall", {
+           this.add.text(game.canvas.width/2, game.canvas.height/3.3, "the Ferret's Treasure", {
               fontFamily: 'Arial',
               fontSize: '80px',
               }).setOrigin(0.5,0);
@@ -38,14 +37,11 @@ class Menu extends Phaser.Scene {
            let textConfig = {
               fontFamily: 'Courier',
               fontSize: '28px',
-              color: '#FF7F50',
               align: 'center',
               padding: {
                   top: 5,
                   bototm: 5,
               },
-              stroke: '#9F730B',
-              strokeThickness: 3,
               fixedWidth: 0
            }
            // setting the center of text
@@ -54,7 +50,6 @@ class Menu extends Phaser.Scene {
            let textSpacer = 48;
      
            // credits line
-           textConfig.color = '#FFEBAD';
            textConfig.fontSize= '25px';
            this.add.text(centerX, centerY + 7 * textSpacer, 'Game by Skyler Haataja, Marlene Lopez, and Daniel Wild', textConfig).setOrigin(0.5);
         }

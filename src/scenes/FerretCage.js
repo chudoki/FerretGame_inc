@@ -1,6 +1,6 @@
-class Level1 extends Phaser.Scene {
+class FerretCage extends Phaser.Scene {
     constructor () {
-        super("playScene");
+        super("FerretCageScene");
     }
 
     preload() {

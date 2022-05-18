@@ -30,8 +30,8 @@ class Ferret extends Phaser.Physics.Matter.Sprite {
                 this.isflipped = false;
             }
         }
-        if((keyUP.isDown || keyW.isDown) && this.velocityY == 0){
-            this.setVelocityY(-this.playerSpeed*2);
+        if((keyUP.isDown || keyW.isDown) ){
+            this.setVelocityY(-this.playerSpeed*1);
         }
         console.log(this.body.angle +"\n" + this.isflipped);
         if (!this.isflipped2 && ((this.body.angle/Math.PI)%2 > 0.5 && (this.body.angle/Math.PI)%2 < 1.5)){

@@ -6,7 +6,9 @@ class Level1 extends Phaser.Scene {
     preload() {
         this.load.image('ferret', 'assets/sprites/ferret player.png');
         this.load.image('platform', 'assets/sprites/platform.png');
+        this.load.image('platform', 'assets/sprites/platform.png');
         this.load.image('platformLg', 'assets/sprites/platformLg.png');
+        this.load.json("physics", "assets/sprites/blocks.json");
     }
 
     create() {
@@ -25,7 +27,7 @@ class Level1 extends Phaser.Scene {
         this.matter.world.setBounds(0, 0, width, height);
         this.cameras.main.setBounds(0, 0, width, height);
         
-       var sus = this.matter.world.nextGroup(true);
+        var sus = this.matter.world.nextGroup(true);
         
         this.player = new Ferret(this, 400, 100, 'ferret').setScale(.15,.15).setCollisionGroup(sus);
         this.player.body.sleepThreshold = -1;
@@ -40,6 +42,8 @@ class Level1 extends Phaser.Scene {
             });
         });
      // Phaser.Physics.Matter.Matter.Composite.add(this.restov,this.player.body);
+     
+        this.add.rectangle(0,height-100,width/2,100, 'red');
 
         this.matter.add.chain(this.restov,1,0,0,0,{
             stiffness: 1,
@@ -54,11 +58,9 @@ class Level1 extends Phaser.Scene {
         this.P2 = new Platform(this, 1500, 400, 'platform', null).setStatic(true).setFriction(2);
         this.P2 = new Platform(this, 1100, 800, 'platformLg', null).setStatic(true).setFriction(2);
         this.cameras.main.startFollow(this.player);
-
     }
 
     update() {
-        
         this.player.update();
     }
 

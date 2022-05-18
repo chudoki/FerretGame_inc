@@ -3,7 +3,7 @@ class Ferret extends Phaser.Physics.Matter.Sprite {
         super(scene.matter.world,x,y,texture,frame);
         scene.add.existing(this);
         
-        this.playerSpeed = 8;
+        this.playerSpeed = 20;
         this.isflipped = false;
         this.isflipped2 = false;
     }

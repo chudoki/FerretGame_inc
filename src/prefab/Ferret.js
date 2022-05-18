@@ -18,9 +18,14 @@ class Ferret extends Phaser.Physics.Matter.Sprite {
         
         if(keyLEFT.isDown || keyA.isDown){
             this.setVelocityX(-this.playerSpeed);
-            if (!this.isflipped && !this.isflipped2){
+            if (!this.isflipped){
                 this.flipX = true;
                 this.isflipped = true;
+            }
+            if(this.isflipped2){
+                
+                this.isflipped = false;
+                this.flipX = false;
             }
         }
         if((keyRIGHT.isDown || keyD.isDown)){
@@ -29,17 +34,22 @@ class Ferret extends Phaser.Physics.Matter.Sprite {
                 this.flipX = false;
                 this.isflipped = false;
             }
+            if(this.isflipped2){
+                
+                this.isflipped = false;
+                this.flipX = true;
+            }
         }
         if((keyUP.isDown || keyW.isDown) ){
             this.setVelocityY(-this.playerSpeed*1);
         }
-        console.log(this.body.angle +"\n" + this.isflipped);
-        if (!this.isflipped2 && ((this.body.angle/Math.PI)%2 > 0.5 && (this.body.angle/Math.PI)%2 < 1.5)){
+        //console.log(this.body.angle +"\n" + this.isflipped);
+        if (!this.isflipped2 && (Math.abs(this.body.angle/Math.PI)%2 > 0.5 && Math.abs(this.body.angle/Math.PI)%2 < 1.5)){
             this.flipY=true;
-            this.isflipped2 = true;
+            this.isflipped = true;
             this.isflipped2 = true;
         }
-        if (this.isflipped2 && (((this.body.angle/Math.PI)%2 < 0.5  || (this.body.angle/Math.PI)%2 > 1.5))){
+        if (this.isflipped2 && ((Math.abs(this.body.angle/Math.PI)%2 < 0.5  || Math.abs(this.body.angle/Math.PI)%2 > 1.5))){
             this.flipY=false;
             this.isflipped2 = false;
         }

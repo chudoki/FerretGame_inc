@@ -25,9 +25,9 @@ class FerretCage extends Phaser.Scene {
         
        var sus = this.matter.world.nextGroup(true);
         
-        this.player = new Ferret(this, 400, 100, 'ferret').setScale(.15,.15).setCollisionGroup(sus);
+        this.player = new Ferret(this, 400, 100, 'ferret').setScale(-.15,.15).setCollisionGroup(sus);
         this.player.body.sleepThreshold = -1;
-        this.player2 = new Ferret(this, 600, 100, 'ferret').setScale(.15,.15).setCollisionGroup(sus);
+        this.player2 = new Ferret(this, 600, 100, 'ferret').setScale(-.15,.15).setCollisionGroup(sus);
         this.player2.body.sleepThreshold = -1;
         this.restov = this.matter.add.stack(300,50,5,1,0,0,function(x,y){
             return Phaser.Physics.Matter.Matter.Bodies.rectangle(x-20,y,100,75,{

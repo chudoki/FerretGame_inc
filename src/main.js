@@ -8,7 +8,7 @@ let config = {
         default: 'matter',
         matter: {
             gravity: {x: 0, y: 3.5},
-            debug: true,
+            //debug: true,
             fps: 10,
             enableSleeping: true,
             setBounds: {

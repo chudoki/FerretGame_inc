@@ -25,6 +25,12 @@ let game = new Phaser.Game(config);
 //let keyF,keyR,keyLEFT,keyRIGHT;
 let borderUISize = game.config.height / 15;
 let borderPadding = borderUISize /3 ;
-let keyDOWN,keyUP,keyLEFT,keyRIGHT,keyESC,keyW,keyS,keyA,keyD;
+let keyDOWN,keyUP,keyLEFT,keyRIGHT,keyESC,keyW,keyS,keyA,keyD,keySHIFT;
 let player;
 let canJump = false;
+let cangrabl = false;
+let cangrabr = false;
+let flipstat = false;
+let grabdown = false;
+let bodylab; 
+ 

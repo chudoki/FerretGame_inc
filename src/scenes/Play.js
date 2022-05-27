@@ -33,9 +33,9 @@ class Level1 extends Phaser.Scene {
         const shapes = this.cache.json.get("shapes");
 
         //add balls
-        for( let i = 200; i < width; i += 250){
+        for( let i = 200; i < width; i += 500){
             
-            this.matter.add.sprite(i,height-800, 'sheet', 'circle.png', {shape: shapes.circle, restitution: 1, frictionAir: .01 }).setScale(.5,.5).setDensity(.0001).setTint(99999);
+            this.matter.add.sprite(i,height-800, 'sheet', 'triangle.png', {shape: shapes.triangle, restitution: .1, frictionAir: .01 }).setScale(.5,.5).setTint(99999);
 
         }
         
@@ -45,14 +45,18 @@ class Level1 extends Phaser.Scene {
         //bodies
          
         var Bodies = Phaser.Physics.Matter.Matter.Bodies;
-        var rect = Bodies.rectangle(0, 0, 32, 32);
+        var rect = Bodies.rectangle(0, 0, 100, 40);
         var circleA = Bodies.circle(-70, 0, 24, { isSensor: true, label: 'left' });
         var circleB = Bodies.circle(70, 0, 24, { isSensor: true, label: 'right' });
-        var circleC = Bodies.circle(0, -70, 24, { isSensor: true, label: 'top' });
-        var circleD = Bodies.circle(0, 70, 24, { isSensor: true, label: 'bottom' });
+       var rectangler = Bodies.rectangle(-70,0,20,10,{isSensor: true,label: 'grableft'});
+       var rectanglel = Bodies.rectangle(70,0,20,10,{isSensor: true,label: 'grabright'});
+
+        var circleC = Bodies.rectangle(0, -20, 2,2, { isSensor: true, label: 'top' });
+        var circleD = Bodies.rectangle(0, 20, 2,2, { isSensor: true, label: 'bottom' });
+
 
         var compoundBody = Phaser.Physics.Matter.Matter.Body.create({
-            parts: [ rect, circleA, circleB, circleC, circleD ],
+            parts: [ rect, circleA,circleB,rectangler,rectanglel, circleC, circleD],
             inertia: Infinity
         });
 
@@ -74,10 +78,11 @@ class Level1 extends Phaser.Scene {
             {
                 var bodyA = pairs[i].bodyA;
                 var bodyB = pairs[i].bodyB;
-
+             //  console.log(bodyA);
                 //  We only want sensor collisions
                 if (pairs[i].isSensor)
                 {
+                  
                     var playerBody;
                     var blockBody;
                     if (bodyA.isSensor)
@@ -91,13 +96,35 @@ class Level1 extends Phaser.Scene {
                     
                         playerBody = bodyB;
                     }
-
+                    
+                    
                     if (playerBody.label === 'bottom')
                 {
-                           console.log("hullo");
+                           console.log("hullo"+canJump);
                         canJump = true; 
                 }
+                if (playerBody.label === 'grableft' && flipstat === false && blockBody != null ){
 
+                    cangrabl = true;
+                    bodylab = blockBody;
+                    if(grabdown === true){
+                    //     console.log("ball vel"+blockBody.gameObject.body.velocity.x);
+                    //     console.log("ball vel"+blockBody.gameObject.body.velocity.y);
+                    //    // blockBody.gameObject.setVelocityX( playerBody.gameObject.body.velocity.x);
+                    //     console.log("ball veldos"+blockBody.gameObject.body.velocity.x);
+                    //     console.log("ball veldos"+blockBody.gameObject.body.velocity.y);
+                    //   //  blockBody.gameObject.setVelocityY(blockBody,playerBody.velocity.y);
+                    //     console.log("ball veltres"+blockBody.gameObject.body.velocity.x);
+                    //     console.log("ball veltres"+blockBody.gameObject.body.velocity.y);
+                    }
+                }
+                    if (playerBody.label === 'grabright' && flipstat === true && blockBody != null ){
+
+                        cangrabr = true;
+                        bodylab = blockBody;
+                        
+                    }
+                
                     //  You can get to the Sprite via `gameObject` property
                     //var playerSprite = playerBody.gameObject;
                     //var blockSprite = blockBody.gameObject;
@@ -108,19 +135,30 @@ class Level1 extends Phaser.Scene {
 
     update() {
         console.log(canJump)
-        console.log(this.player.body.velocity.y+"one")
+      //  console.log(this.player.body.velocity.y+"one")
         if (Math.abs(this.player.body.velocity.y) >=1){
             canJump = false;
-            console.log(this.player.body.velocity.y+"one")
+           // console.log(this.player.body.velocity.y+"one")
           //  canJump = true;
-            console.log(canJump+"two")
+          //  console.log(canJump+"two")
         }
         if (this.cursors.left.isDown)
         {
             this.player.setVelocityX(-10);
+            if(flipstat ===true && grabdown === false){
+                
+                this.player.flipX= false;
+                
+                flipstat =false;
+              }
         }
         else if (this.cursors.right.isDown)
-        {
+        {  
+             if(flipstat ===false && grabdown === false){
+               // console.log(this.player.flip+"amongus");
+              this.player.flipX= true;
+              flipstat =true;
+            }
             this.player.setVelocityX(10);
         }
         else
@@ -130,8 +168,32 @@ class Level1 extends Phaser.Scene {
     
         if (this.cursors.up.isDown && canJump === true )
         {
-            this.player.setVelocityY(-10);
+            this.player.setVelocityY(-20);
         }
+
+        if(this.cursors.shift.isDown && ((cangrabl ===true && flipstat===false) || (cangrabr===true && flipstat===true)) && bodylab.gameObject!=null){
+            
+            console.log(flipstat +"b4")
+            this.matter.body.setInertia(bodylab.gameObject.body,Infinity);
+            console.log( +"4tr")
+            
+           //if(this.player.body.velocity) 
+           bodylab.gameObject.setVelocityX(this.player.body.velocity.x);
+           
+           bodylab.gameObject.setVelocityY(this.player.body.velocity.y);
+           
+            grabdown = true;
+        }
+        if(this.cursors.shift.isUp && grabdown === true && bodylab.gameObject!=null ){
+          //  console.log(bodylab.gameObject.body.inertia)
+            this.matter.body.setInertia(bodylab.gameObject.body,3515736.4);
+           // console.log(bodylab.gameObject.body.inertia +"bro")
+            cangrabl = false;
+            cangrabr = false;
+            grabdown = false;
+        }
+       
+
         
     }
 }

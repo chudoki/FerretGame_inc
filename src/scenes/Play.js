@@ -43,6 +43,7 @@ class Level1 extends Phaser.Scene {
         this.matter.world.setBounds(0, 0,width,height-100);
         this.cameras.main.setBounds(0, 0,width,height);
         //bodies
+         
         var Bodies = Phaser.Physics.Matter.Matter.Bodies;
         var rect = Bodies.rectangle(0, 0, 32, 32);
         var circleA = Bodies.circle(-70, 0, 24, { isSensor: true, label: 'left' });
@@ -64,10 +65,11 @@ class Level1 extends Phaser.Scene {
         this.cameras.main.startFollow(this.player);
 
         //collision callback
-        this.matter.world.on('collisionstart', function (event) {
+        this.matter.world.on('collisionactive', function (event) {
             //  Loop through all of the collision pairs
+           // console.log("hullo");
             var pairs = event.pairs;
-
+           
             for (var i = 0; i < pairs.length; i++)
             {
                 var bodyA = pairs[i].bodyA;
@@ -77,15 +79,24 @@ class Level1 extends Phaser.Scene {
                 if (pairs[i].isSensor)
                 {
                     var playerBody;
-
+                    var blockBody;
                     if (bodyA.isSensor)
                     {
-                        thisplayerBody = bodyA;
+                        blockBody = bodyB;
+                        playerBody = bodyA;
                     }
                     else if (bodyB.isSensor)
                     {
+                        blockBody = bodyA;
+                    
                         playerBody = bodyB;
                     }
+
+                    if (playerBody.label === 'bottom')
+                {
+                           console.log("hullo");
+                        canJump = true; 
+                }
 
                     //  You can get to the Sprite via `gameObject` property
                     //var playerSprite = playerBody.gameObject;
@@ -96,6 +107,14 @@ class Level1 extends Phaser.Scene {
     }
 
     update() {
+        console.log(canJump)
+        console.log(this.player.body.velocity.y+"one")
+        if (Math.abs(this.player.body.velocity.y) >=1){
+            canJump = false;
+            console.log(this.player.body.velocity.y+"one")
+          //  canJump = true;
+            console.log(canJump+"two")
+        }
         if (this.cursors.left.isDown)
         {
             this.player.setVelocityX(-10);
@@ -109,13 +128,10 @@ class Level1 extends Phaser.Scene {
             this.player.setVelocityX(0);
         }
     
-        if (this.cursors.up.isDown)
+        if (this.cursors.up.isDown && canJump === true )
         {
             this.player.setVelocityY(-10);
         }
-        else if (this.cursors.down.isDown)
-        {
-            this.player.setVelocityY(10);
-        }
+        
     }
 }

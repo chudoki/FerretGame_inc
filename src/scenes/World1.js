@@ -12,19 +12,25 @@ class World1 extends Phaser.Scene {
         this.load.atlas('sheet', 'assets/sprites/shapePack-0.png', 'assets/sprites/shapePack.json');
         this.load.audio('sfx_bump', 'assets/bump.wav');
         this.load.json("shapes", "assets/sprites/shapes.json");
-        this.load.tilemapTiledJSON("map", "assets/tiledV1.json");
-        this.load.image(
-            "ferretTiledAssets",
-            "assets/tiledV1.png"
-        );
 
-    }
+        this.load.tilemapTiledJSON("map", "assets/tiledV1.json");
+        this.load.image("tiledV1", "assets/tiledV1.png");
+
+    };
 
     create() {
-        let height = 1600;
-        let width = 9000;
-        
-        
+        const map = this.make.tilemap({ key: "map" });
+        const tileset = map.addTilesetImage("tiledV1");
+        const groundLayer = map.createLayer("Ground", tileset, 0, 0);  
+        const bgLayer = map.createLayer("nullCollides", tileset, 0, 0);      
+        this.width = map.width*32;
+        this.height = map.heigh*32;
+
+        groundLayer.setCollisionByProperty({ collides: true });
+        bgLayer.setCollisionByProperty({ collides: true });
+        this.matter.world.convertTilemapLayer(groundLayer);
+        this.matter.world.convertTilemapLayer(bgLayer);
+
         this.playThud = false;
         this.exitTrigger = false;
         //background music
@@ -39,15 +45,10 @@ class World1 extends Phaser.Scene {
         const shapes = this.cache.json.get("shapes");
 
         //add balls
-        for( let i = 200; i < width; i += 500){
-            
-            this.matter.add.sprite(i,height-800, 'sheet', 'triangle.png', {shape: shapes.triangle, restitution: .1, frictionAir: .01 }).setScale(.5,.5).setTint(99999);
-
-        }
         
         // camera
-        this.matter.world.setBounds(0, 0,width,height-100);
-        this.cameras.main.setBounds(0, 0,width,height);
+        this.matter.world.setBounds(0, 0,this.width,this.height-100);
+        this.cameras.main.setBounds(0, 0,this.width,this.height);
         //bodies
          
         var Bodies = Phaser.Physics.Matter.Matter.Bodies;
@@ -68,10 +69,8 @@ class World1 extends Phaser.Scene {
 
         this.player = this.matter.add.sprite(0, 0, 'ferret').setScale(.1);
         this.player.setExistingBody(compoundBody);
-        this.player.setPosition(100, 300);
-        
+
         this.player.body.sleepThreshold = -1;
-        this.floor2 = this.add.rectangle(width/2,height-50,width,100,0xdda15e);
         this.cameras.main.startFollow(this.player);
         //Pause control
         this.events.on('resume', (scene, data)=> {
@@ -113,7 +112,7 @@ class World1 extends Phaser.Scene {
                     
                     if (playerBody.label === 'bottom')
                 {
-                           console.log("hullo"+canJump);
+                           //console.log("hullo"+canJump);
                            bottomlab= blockBody;
                         canJump = true; 
                 }
@@ -148,11 +147,12 @@ class World1 extends Phaser.Scene {
     }
 
     update() {
+        
         if(Phaser.Input.Keyboard.JustDown(keyESC) ){
              this.scene.launch('PauseScreen');
              this.scene.pause();
         }
-        console.log(canJump)
+        //console.log(canJump)
       //  console.log(this.player.body.velocity.y+"one")
         if (Math.abs(this.player.body.velocity.y) >=1){
             canJump = false;

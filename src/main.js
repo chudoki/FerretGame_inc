@@ -1,13 +1,13 @@
 
 let config = {
     type: Phaser.CANVAS,
-    width: 1200,
-    height: 800,
-    scene: [Menu,Level1,FerretCage,Pause],
+    width: 320,
+    height: 180,
+    scene: [Menu,Level1,FerretCage,World1,Pause],
     physics: {
         default: 'matter',
         matter: {
-            gravity: {x: 0, y: 3.5},
+            gravity: {x: 0, y: .5},
             debug: true,
             fps: 10,
             enableSleeping: true,
@@ -19,6 +19,14 @@ let config = {
             }
         },
     },
+    scale: {
+
+        mode: Phaser.Scale.FIT,
+        autoCenter: Phaser.Scale.CENTER_BOTH,
+
+        zoom: 1.5,  // Size of game canvas = game size * zoom
+    },
+    autoRound: false,
     autoCenter: Phaser.Scale.Center,
 }
 let game = new Phaser.Game(config);

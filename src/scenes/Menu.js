@@ -55,7 +55,7 @@ class Menu extends Phaser.Scene {
         }
         update(){
            if(this.start == true){
-              this.scene.start('playScene');
+              this.scene.start('world1Scene');
               this.start = false;
            }
            if(this.howStart == true){

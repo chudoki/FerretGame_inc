@@ -21,12 +21,13 @@ class Level1 extends Phaser.Scene {
         
         
         this.playThud = false;
-    
+        this.exitTrigger = false;
         //background music
         this.bgm =this.sound.add('sunnyMorning',{loop: true, volume:0.3});
         this.bgm.play();
 
         // input keys
+        keyESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
         this.cursors = this.input.keyboard.createCursorKeys();
         
         //take in physics coordinates
@@ -51,8 +52,8 @@ class Level1 extends Phaser.Scene {
        var rectangler = Bodies.rectangle(-70,0,20,10,{isSensor: true,label: 'grableft'});
        var rectanglel = Bodies.rectangle(70,0,20,10,{isSensor: true,label: 'grabright'});
 
-        var circleC = Bodies.rectangle(0, -20, 2,2, { isSensor: true, label: 'top' });
-        var circleD = Bodies.rectangle(0, 20, 2,2, { isSensor: true, label: 'bottom' });
+        var circleC = Bodies.rectangle(0, -20, 60,2, { isSensor: true, label: 'top' });
+        var circleD = Bodies.rectangle(0, 20, 60,2, { isSensor: true, label: 'bottom' });
 
 
         var compoundBody = Phaser.Physics.Matter.Matter.Body.create({
@@ -67,7 +68,14 @@ class Level1 extends Phaser.Scene {
         this.player.body.sleepThreshold = -1;
         this.floor2 = this.add.rectangle(width/2,height-50,width,100,0xdda15e);
         this.cameras.main.startFollow(this.player);
-
+        //Pause control
+        this.events.on('resume', (scene, data)=> {
+            if (data){
+               
+                this.bgm.stop();
+                this.scene.start('Menu');
+            }
+        });
         //collision callback
         this.matter.world.on('collisionactive', function (event) {
             //  Loop through all of the collision pairs
@@ -101,6 +109,7 @@ class Level1 extends Phaser.Scene {
                     if (playerBody.label === 'bottom')
                 {
                            console.log("hullo"+canJump);
+                           bottomlab= blockBody;
                         canJump = true; 
                 }
                 if (playerBody.label === 'grableft' && flipstat === false && blockBody != null ){
@@ -134,6 +143,10 @@ class Level1 extends Phaser.Scene {
     }
 
     update() {
+        if(Phaser.Input.Keyboard.JustDown(keyESC) ){
+             this.scene.launch('PauseScreen');
+             this.scene.pause();
+        }
         console.log(canJump)
       //  console.log(this.player.body.velocity.y+"one")
         if (Math.abs(this.player.body.velocity.y) >=1){
@@ -171,7 +184,7 @@ class Level1 extends Phaser.Scene {
             this.player.setVelocityY(-20);
         }
 
-        if(this.cursors.shift.isDown && ((cangrabl ===true && flipstat===false) || (cangrabr===true && flipstat===true)) && bodylab.gameObject!=null){
+        if(this.cursors.shift.isDown && ((cangrabl ===true && flipstat===false) || (cangrabr===true && flipstat===true)) && bodylab.gameObject!=null && bottomlab.gameObject!=bodylab.gameObject){
             
             console.log(flipstat +"b4")
             this.matter.body.setInertia(bodylab.gameObject.body,Infinity);
@@ -179,7 +192,7 @@ class Level1 extends Phaser.Scene {
             
            //if(this.player.body.velocity) 
            bodylab.gameObject.setVelocityX(this.player.body.velocity.x);
-           
+
            bodylab.gameObject.setVelocityY(this.player.body.velocity.y);
            
             grabdown = true;

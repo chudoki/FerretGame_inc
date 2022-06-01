@@ -24,7 +24,7 @@ class Menu extends Phaser.Scene {
               fontSize: '100px',
               }).setOrigin(0.5,0);
            this.add.text(game.canvas.width/2, game.canvas.height/3.3, "the Ferret's Treasure", {
-              fontFamily: 'Arial',
+              fontFamily: 'KarmaticArcade',
               fontSize: '80px',
               }).setOrigin(0.5,0);
            //this.add.rectangle()

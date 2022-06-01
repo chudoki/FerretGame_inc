@@ -12,24 +12,26 @@ class World1 extends Phaser.Scene {
         this.load.atlas('sheet', 'assets/sprites/shapePack-0.png', 'assets/sprites/shapePack.json');
         this.load.audio('sfx_bump', 'assets/bump.wav');
         this.load.json("shapes", "assets/sprites/shapes.json");
-
-        this.load.tilemapTiledJSON("map", "assets/tiledV1.json");
-        this.load.image("tiledV1", "assets/tiledV1.png");
+        this.load.tilemapTiledJSON("map", "assets/tilemaps/level.json");
+        this.load.image(
+          "kenney-tileset-64px-extruded",
+          "assets/tilesets/kenney-tileset-64px-extruded.png"
+        );
 
     };
 
     create() {
         const map = this.make.tilemap({ key: "map" });
-        const tileset = map.addTilesetImage("tiledV1");
-        const groundLayer = map.createLayer("Ground", tileset, 0, 0);  
-        const bgLayer = map.createLayer("nullCollides", tileset, 0, 0);      
-        this.width = map.width*32;
-        this.height = map.heigh*32;
+        const tileset = map.addTilesetImage("kenney-tileset-64px-extruded");
+        const groundLayer = map.createLayer("Ground", tileset, 0, 0);
+        const lavaLayer = map.createLayer("Lava", tileset, 0, 0); 
+        this.width = map.width*64;
+        this.height = map.heigh*64;
 
         groundLayer.setCollisionByProperty({ collides: true });
-        bgLayer.setCollisionByProperty({ collides: true });
+        lavaLayer.setCollisionByProperty({ collides: true });
         this.matter.world.convertTilemapLayer(groundLayer);
-        this.matter.world.convertTilemapLayer(bgLayer);
+    this.matter.world.convertTilemapLayer(lavaLayer);
 
         this.playThud = false;
         this.exitTrigger = false;
@@ -94,7 +96,7 @@ class World1 extends Phaser.Scene {
                 //  We only want sensor collisions
                 if (pairs[i].isSensor)
                 {
-                  
+                    
                     var playerBody;
                     var blockBody;
                     if (bodyA.isSensor)
@@ -108,17 +110,20 @@ class World1 extends Phaser.Scene {
                     
                         playerBody = bodyB;
                     }
+                    else {
+                        continue;
+                    }
                     
-                    
-                    if (playerBody.label === 'bottom')
-                {
-                           //console.log("hullo"+canJump);
-                           bottomlab= blockBody;
+                    if (playerBody.label === 'bottom'){
+                        //console.log("hullo"+canJump);
+                        bottomlab= blockBody;
                         canJump = true; 
-                }
-                if (playerBody.label === 'grableft' && flipstat === false && blockBody != null ){
-
-                    cangrabl = true;
+                    }
+                    if(((playerBody.label === 'grableft') || (playerBody.label === 'grabright')) && console.log(blockBody.label)){
+                        continue;
+                    };
+                    if (playerBody.label === 'grableft' && flipstat === false && blockBody != null ){
+                        cangrabl = true;
                     bodylab = blockBody;
                     if(grabdown === true){
                     //     console.log("ball vel"+blockBody.gameObject.body.velocity.x);
@@ -131,7 +136,7 @@ class World1 extends Phaser.Scene {
                     //     console.log("ball veltres"+blockBody.gameObject.body.velocity.y);
                     }
                 }
-                    if (playerBody.label === 'grabright' && flipstat === true && blockBody != null ){
+                    if (playerBody.label === 'grabright' && flipstat === true && blockBody != null){
 
                         cangrabr = true;
                         bodylab = blockBody;

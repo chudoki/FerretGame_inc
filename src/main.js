@@ -1,13 +1,13 @@
 
 let config = {
     type: Phaser.CANVAS,
-    width: 320,
-    height: 180,
+    width: 640,
+    height: 360,
     scene: [Menu,Level1,FerretCage,World1,Pause],
     physics: {
         default: 'matter',
         matter: {
-            gravity: {x: 0, y: .5},
+            gravity: {x: 0, y: 3},
             debug: true,
             fps: 10,
             enableSleeping: true,

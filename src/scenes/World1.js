@@ -17,6 +17,8 @@ class World1 extends Phaser.Scene {
           "tiledV1",
           "assets/tiledV1.png"
         );
+        this.load.multiatlas('ferretWalk', 'assets/anims.json', 'assets');
+        this.load.spritesheet();
 
     };
 
@@ -25,8 +27,8 @@ class World1 extends Phaser.Scene {
         const tileset = map.addTilesetImage("tiledV1");
         const groundLayer = map.createLayer("Ground", tileset, 0, 0);
         const bgLayer = map.createLayer("nullCollides", tileset, 0, 0);
-        this.width = map.width*64;
-        this.height = map.heigh*64;
+        this.width = map.width*32;
+        this.height = map.height*32;
 
         groundLayer.setCollisionByProperty({ collides: true });
         bgLayer.setCollisionByProperty({ collides: true });

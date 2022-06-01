@@ -12,26 +12,26 @@ class World1 extends Phaser.Scene {
         this.load.atlas('sheet', 'assets/sprites/shapePack-0.png', 'assets/sprites/shapePack.json');
         this.load.audio('sfx_bump', 'assets/bump.wav');
         this.load.json("shapes", "assets/sprites/shapes.json");
-        this.load.tilemapTiledJSON("map", "assets/tilemaps/level.json");
+        this.load.tilemapTiledJSON("map", "assets/tiledV1.json");
         this.load.image(
-          "kenney-tileset-64px-extruded",
-          "assets/tilesets/kenney-tileset-64px-extruded.png"
+          "tiledV1",
+          "assets/tiledV1.png"
         );
 
     };
 
     create() {
         const map = this.make.tilemap({ key: "map" });
-        const tileset = map.addTilesetImage("kenney-tileset-64px-extruded");
+        const tileset = map.addTilesetImage("tiledV1");
         const groundLayer = map.createLayer("Ground", tileset, 0, 0);
-        const lavaLayer = map.createLayer("Lava", tileset, 0, 0); 
+        const bgLayer = map.createLayer("nullCollides", tileset, 0, 0);
         this.width = map.width*64;
         this.height = map.heigh*64;
 
         groundLayer.setCollisionByProperty({ collides: true });
-        lavaLayer.setCollisionByProperty({ collides: true });
+        bgLayer.setCollisionByProperty({ collides: true });
         this.matter.world.convertTilemapLayer(groundLayer);
-    this.matter.world.convertTilemapLayer(lavaLayer);
+        this.matter.world.convertTilemapLayer(bgLayer);
 
         this.playThud = false;
         this.exitTrigger = false;
@@ -119,7 +119,7 @@ class World1 extends Phaser.Scene {
                         bottomlab= blockBody;
                         canJump = true; 
                     }
-                    if(((playerBody.label === 'grableft') || (playerBody.label === 'grabright')) && console.log(blockBody.label)){
+                    if(((playerBody.label === 'grableft') || (playerBody.label === 'grabright')) && console.log(blockBody.label=='Rectangle Body')){
                         continue;
                     };
                     if (playerBody.label === 'grableft' && flipstat === false && blockBody != null ){

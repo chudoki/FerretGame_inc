@@ -40,5 +40,6 @@ let cangrabl = false;
 let cangrabr = false;
 let flipstat = false;
 let grabdown = false;
+let endgame = false;
 let bodylab,bottomlab; 
  

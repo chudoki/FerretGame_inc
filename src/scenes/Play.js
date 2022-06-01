@@ -11,6 +11,7 @@ class Level1 extends Phaser.Scene {
         this.load.image('platformLg', 'assets/sprites/platformLg.png');
         this.load.atlas('sheet', 'assets/sprites/shapePack-0.png', 'assets/sprites/shapePack.json');
         this.load.audio('sfx_bump', 'assets/bump.wav');
+        this.load.image('toy','assets/sprites/toy.png');
         this.load.json("shapes", "assets/sprites/shapes.json");
 
     }
@@ -64,7 +65,9 @@ class Level1 extends Phaser.Scene {
         this.player = this.matter.add.sprite(0, 0, 'ferret').setScale(.1);
         this.player.setExistingBody(compoundBody);
         this.player.setPosition(100, 300);
-        
+        this.troy = new Toy(this,1200,900,'toy',0);
+        Phaser.Physics.Matter.Matter.Body.set( this.troy.body,
+            { label :'toy'});
         this.player.body.sleepThreshold = -1;
         this.floor2 = this.add.rectangle(width/2,height-50,width,100,0xdda15e);
         this.cameras.main.startFollow(this.player);
@@ -86,7 +89,7 @@ class Level1 extends Phaser.Scene {
             {
                 var bodyA = pairs[i].bodyA;
                 var bodyB = pairs[i].bodyB;
-             //  console.log(bodyA);
+              // console.log(bodyA);
                 //  We only want sensor collisions
                 if (pairs[i].isSensor)
                 {
@@ -104,19 +107,28 @@ class Level1 extends Phaser.Scene {
                     
                         playerBody = bodyB;
                     }
-                    
+                    console.log("inlabel chce" +blockBody.label);
+                    if(blockBody.label === 'toy')
+                    {
+                       // console.log("inlabel chce" +blockBody.label);
+                        endgame = true;
+                    } 
                     
                     if (playerBody.label === 'bottom')
                 {
                            console.log("hullo"+canJump);
                            bottomlab= blockBody;
+                         
                         canJump = true; 
+                           
                 }
                 if (playerBody.label === 'grableft' && flipstat === false && blockBody != null ){
-
+           
                     cangrabl = true;
                     bodylab = blockBody;
+
                     if(grabdown === true){
+                        canJump=false;
                     //     console.log("ball vel"+blockBody.gameObject.body.velocity.x);
                     //     console.log("ball vel"+blockBody.gameObject.body.velocity.y);
                     //    // blockBody.gameObject.setVelocityX( playerBody.gameObject.body.velocity.x);
@@ -128,9 +140,12 @@ class Level1 extends Phaser.Scene {
                     }
                 }
                     if (playerBody.label === 'grabright' && flipstat === true && blockBody != null ){
-
+                     
                         cangrabr = true;
                         bodylab = blockBody;
+                        if(grabdown ===true){
+                            canJump = false;
+                        }
                         
                     }
                 
@@ -143,11 +158,16 @@ class Level1 extends Phaser.Scene {
     }
 
     update() {
+        if(endgame === true){
+            this.bgm.stop();
+            this.scene.launch('Menu');
+            this.scene.stop()
+        }
         if(Phaser.Input.Keyboard.JustDown(keyESC) ){
              this.scene.launch('PauseScreen');
              this.scene.pause();
         }
-        console.log(canJump)
+        //console.log(canJump)
       //  console.log(this.player.body.velocity.y+"one")
         if (Math.abs(this.player.body.velocity.y) >=1){
             canJump = false;
@@ -185,20 +205,21 @@ class Level1 extends Phaser.Scene {
         }
 
         if(this.cursors.shift.isDown && ((cangrabl ===true && flipstat===false) || (cangrabr===true && flipstat===true)) && bodylab.gameObject!=null && bottomlab.gameObject!=bodylab.gameObject){
-            
+            canJump = false;
             console.log(flipstat +"b4")
             this.matter.body.setInertia(bodylab.gameObject.body,Infinity);
             console.log( +"4tr")
             
            //if(this.player.body.velocity) 
            bodylab.gameObject.setVelocityX(this.player.body.velocity.x);
-
-           bodylab.gameObject.setVelocityY(this.player.body.velocity.y);
+           //canJump = false;
+          // bodylab.gameObject.setVelocityY(this.player.body.velocity.y);
            
             grabdown = true;
         }
         if(this.cursors.shift.isUp && grabdown === true && bodylab.gameObject!=null ){
           //  console.log(bodylab.gameObject.body.inertia)
+          canJump=false;
             this.matter.body.setInertia(bodylab.gameObject.body,3515736.4);
            // console.log(bodylab.gameObject.body.inertia +"bro")
             cangrabl = false;

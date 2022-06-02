@@ -14,18 +14,18 @@ class Menu extends Phaser.Scene {
            // background
            this.game.backgroundColor = "#4488AA";
            // button
-           this.button = this.add.image(game.canvas.width/2, game.canvas.height/1.9, 'playButton').setScale(.5);
+           this.button = this.add.image(game.canvas.width/2, game.canvas.height/1.9, 'playButton').setScale(.3);
            this.button.setInteractive();
-           this.howButton = this.add.image(game.canvas.width/2, game.canvas.height/1.9 + this.button.height, 'howToButton').setScale(.5);
+           this.howButton = this.add.image(game.canvas.width/2, game.canvas.height/1.9+this.button.height/2.2 , 'howToButton').setScale(.3);
            this.howButton.setInteractive();
            // title
            this.add.text(game.canvas.width/2, game.canvas.height/5.5, "Hunt for ", {
-              fontFamily: 'Arial',
-              fontSize: '100px',
+              fontFamily: 'KarmaticArcade',
+              fontSize: '16px',
               }).setOrigin(0.5,0);
            this.add.text(game.canvas.width/2, game.canvas.height/3.3, "the Ferret's Treasure", {
               fontFamily: 'KarmaticArcade',
-              fontSize: '80px',
+              fontSize: '16px',
               }).setOrigin(0.5,0);
            //this.add.rectangle()
            this.start = false;
@@ -59,7 +59,7 @@ class Menu extends Phaser.Scene {
               this.start = false;
            }
            if(this.howStart == true){
-              this.scene.start('FerretCageScene');
+              this.scene.start('creditsScene');
               this.howStart = false;
            }
            this.button.on("pointerdown", () => {

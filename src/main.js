@@ -3,7 +3,7 @@ let config = {
     type: Phaser.CANVAS,
     width: 360,
     height: 220,
-    scene: [Menu,Level1,FerretCage,World1,Pause],
+    scene: [Menu,Level1,tutorial,World1,Credits,Pause],
     physics: {
         default: 'matter',
         matter: {

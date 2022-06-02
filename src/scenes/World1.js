@@ -17,12 +17,13 @@ class World1 extends Phaser.Scene {
           "tiledV1",
           "assets/tiledV1.png"
         );
-        this.load.multiatlas('ferretWalk', 'assets/anims.json', 'assets');
-        this.load.spritesheet();
+        this.load.spritesheet('ferretW', 'assets/ferretWalk.png', {frameWidth: 50, frameHeight: 22 });
 
     };
 
     create() {
+        this.game_started = false;
+        this.frames = 0;
         const map = this.make.tilemap({ key: "map" });
         const tileset = map.addTilesetImage("tiledV1");
         const groundLayer = map.createLayer("Ground", tileset, 0, 0);
@@ -51,27 +52,26 @@ class World1 extends Phaser.Scene {
         //add balls
         
         // camera
-        this.matter.world.setBounds(0, 0,this.width,this.height-100);
+        this.matter.world.setBounds(0, 0,this.width,this.height);
         this.cameras.main.setBounds(0, 0,this.width,this.height);
         //bodies
          
         var Bodies = Phaser.Physics.Matter.Matter.Bodies;
-        var rect = Bodies.rectangle(0, 0, 100, 40);
-        var circleA = Bodies.circle(-70, 0, 24, { isSensor: true, label: 'left' });
-        var circleB = Bodies.circle(70, 0, 24, { isSensor: true, label: 'right' });
-       var rectangler = Bodies.rectangle(-70,0,20,10,{isSensor: true,label: 'grableft'});
-       var rectanglel = Bodies.rectangle(70,0,20,10,{isSensor: true,label: 'grabright'});
+        var rect = Bodies.rectangle(0, 0, 50, 22);
+       var rectangler = Bodies.rectangle(-30,0,14,10,{isSensor: true,label: 'grableft'});
+       var rectanglel = Bodies.rectangle(30,0,14,10,{isSensor: true,label: 'grabright'});
 
-        var circleC = Bodies.rectangle(0, -20, 60,2, { isSensor: true, label: 'top' });
-        var circleD = Bodies.rectangle(0, 20, 60,2, { isSensor: true, label: 'bottom' });
+        var rectangT = Bodies.rectangle(0, -16, 36,28, { isSensor: true, label: 'top' });
+        var rectangB = Bodies.rectangle(0, 16, 36,28, { isSensor: true, label: 'bottom' });
 
 
         var compoundBody = Phaser.Physics.Matter.Matter.Body.create({
-            parts: [ rect, circleA,circleB,rectangler,rectanglel, circleC, circleD],
+            parts: [ rect,rectangler,rectanglel, rectangT, rectangB],
             inertia: Infinity
         });
 
-        this.player = this.matter.add.sprite(0, 0, 'ferret').setScale(.1);
+        this.player = this.matter.add.sprite(0, 0, 'ferretW', this.frames);
+        
         this.player.setExistingBody(compoundBody);
 
         this.player.body.sleepThreshold = -1;
@@ -87,7 +87,7 @@ class World1 extends Phaser.Scene {
         //collision callback
         this.matter.world.on('collisionactive', function (event) {
             //  Loop through all of the collision pairs
-           // console.log("hullo");
+           
             var pairs = event.pairs;
            
             for (var i = 0; i < pairs.length; i++)
@@ -115,18 +115,17 @@ class World1 extends Phaser.Scene {
                     else {
                         continue;
                     }
-                    
                     if (playerBody.label === 'bottom'){
                         //console.log("hullo"+canJump);
                         bottomlab= blockBody;
-                        canJump = true; 
+                        canJump = true;   
                     }
-                    if(((playerBody.label === 'grableft') || (playerBody.label === 'grabright')) && console.log(blockBody.label=='Rectangle Body')){
+                    if(blockBody.label == 'Rectangle Body' || blockBody.label == 'Body'){
                         continue;
-                    };
+                    }
                     if (playerBody.label === 'grableft' && flipstat === false && blockBody != null ){
                         cangrabl = true;
-                    bodylab = blockBody;
+                        bodylab = blockBody;
                     if(grabdown === true){
                     //     console.log("ball vel"+blockBody.gameObject.body.velocity.x);
                     //     console.log("ball vel"+blockBody.gameObject.body.velocity.y);
@@ -154,7 +153,10 @@ class World1 extends Phaser.Scene {
     }
 
     update() {
-        
+        if(!this.game_started){
+            this.player.y = 200;
+            this.game_started = true;
+        }
         if(Phaser.Input.Keyboard.JustDown(keyESC) ){
              this.scene.launch('PauseScreen');
              this.scene.pause();
@@ -167,33 +169,73 @@ class World1 extends Phaser.Scene {
           //  canJump = true;
           //  console.log(canJump+"two")
         }
+        
         if (this.cursors.left.isDown)
         {
-            this.player.setVelocityX(-10);
+            if (!this.player.anims.isPlaying || this.player.anims.currentAnim.key === 'idle') {
+                this.anims.create({
+                    key: "walk",
+                    frameRate: 7,
+                    frames: this.anims.generateFrameNumbers("ferretW", { start: 0, end: 5 }),
+                    repeat: -1
+                });
+                this.player.play("walk");
+            }
+            else
+            this.player.setVelocityX(-5);
             if(flipstat ===true && grabdown === false){
                 
-                this.player.flipX= false;
+                this.player.flipX= true;
                 
                 flipstat =false;
               }
+            if (this.cursors.up.isDown && canJump === true )
+            {
+                  this.player.setVelocityY(-12);
+            }
         }
         else if (this.cursors.right.isDown)
         {  
+            if (!this.player.anims.isPlaying || this.player.anims.currentAnim.key === 'idle') {
+                this.anims.create({
+                    key: "walk",
+                    frameRate: 7,
+                    frames: this.anims.generateFrameNumbers("ferretW", { start: 0, end: 5 }),
+                    repeat: 0
+                });
+                this.player.play("walk");
+            }
+            
              if(flipstat ===false && grabdown === false){
                // console.log(this.player.flip+"amongus");
-              this.player.flipX= true;
+              this.player.flipX= false;
               flipstat =true;
             }
-            this.player.setVelocityX(10);
+            this.player.setVelocityX(5);
+            this.frames++;
+            this.frames = this.frames%6;
+            if (this.cursors.up.isDown && canJump === true )
+            {
+                  this.player.setVelocityY(-12);
+            }
         }
         else
         {
-            this.player.setVelocityX(0);
+            if (!this.player.anims.isPlaying || this.player.anims.currentAnim.key === 'walk') {
+                this.player.setVelocityX(0);
+                this.anims.create({
+                    key: "idle",
+                    frameRate: 2,
+                    frames: this.anims.generateFrameNumbers("ferretW", { start: 0, end: 1 }),
+                    repeat: 0
+                });
+                this.player.play("idle");
+            }
         }
     
         if (this.cursors.up.isDown && canJump === true )
         {
-            this.player.setVelocityY(-20);
+            this.player.setVelocityY(-12);
         }
 
         if(this.cursors.shift.isDown && ((cangrabl ===true && flipstat===false) || (cangrabr===true && flipstat===true)) && bodylab.gameObject!=null && bottomlab.gameObject!=bodylab.gameObject){

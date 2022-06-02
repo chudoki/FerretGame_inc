@@ -1,4 +1,4 @@
-class FerretCage extends Phaser.Scene {
+class tutorial extends Phaser.Scene {
     preload(){
         this.load.image('menuButton', 'assets/buttons/testingButton.png');
        // this.load.image('bg', 'assets/bg.png');
@@ -7,7 +7,7 @@ class FerretCage extends Phaser.Scene {
        // this.load.image('instructionSheet', 'assets/howto.png');
     }
     constructor(){
-       super("FerretCageScene");
+       super("tutorialScene");
     }
 
     create(){
@@ -17,7 +17,7 @@ class FerretCage extends Phaser.Scene {
         // KB input
         keyESC2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
         // buttons
-        this.menuButton = this.add.image(game.canvas.width/2, game.canvas.height-70, 'menuButton').setScale(1.5);
+        this.menuButton = this.add.image(game.canvas.width/2, game.canvas.height/2+70, 'menuButton').setScale(.3);
         this.menuButton.setInteractive();
     }
 

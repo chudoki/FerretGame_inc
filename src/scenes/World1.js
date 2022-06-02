@@ -22,6 +22,7 @@ class World1 extends Phaser.Scene {
     };
 
     create() {
+        const shapes = this.cache.json.get("shapes");
         this.game_started = false;
         this.frames = 0;
         const map = this.make.tilemap({ key: "map" });
@@ -30,7 +31,11 @@ class World1 extends Phaser.Scene {
         const bgLayer = map.createLayer("nullCollides", tileset, 0, 0);
         this.width = map.width*32;
         this.height = map.height*32;
+       // for( let i = 200; i < this.width; i += 500){
+            
+            this.matter.add.sprite(0,128, 'sheet', 'block.png', {shape: shapes.block, restitution: .1, frictionAir: .01 }).setScale(.05,.05).setTint(99999);
 
+      //  }
         groundLayer.setCollisionByProperty({ collides: true });
         bgLayer.setCollisionByProperty({ collides: true });
         this.matter.world.convertTilemapLayer(groundLayer);
@@ -47,7 +52,7 @@ class World1 extends Phaser.Scene {
         this.cursors = this.input.keyboard.createCursorKeys();
         
         //take in physics coordinates
-        const shapes = this.cache.json.get("shapes");
+        //const shapes = this.cache.json.get("shapes");
 
         //add balls
         
@@ -81,7 +86,8 @@ class World1 extends Phaser.Scene {
             if (data){
                
                 this.bgm.stop();
-                this.scene.start('Menu');
+                this.scene.start('PauseScreen');
+                this.scene.pause();
             }
         });
         //collision callback

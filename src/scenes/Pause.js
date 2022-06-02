@@ -16,14 +16,14 @@ class Pause extends Phaser.Scene {
         // "Paused" text
         let PauseStyle = {
             fontFamily: 'KarmaticArcade',
-            fontSize: "80px",
+            fontSize: "16px",
             align: 'center',
         }
-        this.pauseText = this.add.text(game.canvas.width/2, game.canvas.height/3, "PAUSED", PauseStyle).setOrigin(0.5);
+        this.pauseText = this.add.text(game.canvas.width/2, game.canvas.height/2-32, "PAUSED", PauseStyle).setOrigin(0.5);
         // buttons
-        this.playButton = this.add.image(game.canvas.width/2, game.canvas.height/2, 'playButton').setScale(.5);
+        this.playButton = this.add.image(game.canvas.width/2, game.canvas.height/2, 'playButton').setScale(.2);
         this.playButton.setInteractive();
-        this.menuButton = this.add.image(game.canvas.width/2, game.canvas.height/2+this.playButton.height, 'menuButton').setScale(.5);
+        this.menuButton = this.add.image(game.canvas.width/2, game.canvas.height/2+32, 'menuButton').setScale(.2);
         this.menuButton.setInteractive();
     }
 
@@ -34,7 +34,7 @@ class Pause extends Phaser.Scene {
         if (Phaser.Input.Keyboard.JustDown(keyESC2) || this.start){
             // this.scene.stop()
             
-            this.scene.resume('playScene');
+            this.scene.resume('world1Scene');
             this.start = false;
             //this.scene.switch('playScene')
             this.scene.stop();
@@ -45,7 +45,7 @@ class Pause extends Phaser.Scene {
         }
         if (this.exit){
             // this.scene.stop()
-            this.scene.resume('playScene', {exitTrigger: true});
+            this.scene.resume('world1Scene', {exitTrigger: true});
             //this.scene.switch('playScene')
             this.exit = false;
             this.scene.stop();

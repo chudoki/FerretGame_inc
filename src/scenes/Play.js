@@ -76,7 +76,7 @@ class Level1 extends Phaser.Scene {
             if (data){
                
                 this.bgm.stop();
-                this.scene.start('Menu');
+                this.scene.start('PauseScreen');
             }
         });
         //collision callback

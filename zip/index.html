@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Endless Runner</title>
+    <style media='screen' type='text/css'>
+        @font-face {
+          font-family: KarmaticArcade;
+          src: url('assets/ka1.ttf');
+          font-weight:400;
+          font-weight:normal;
+        }
+    </style>
+    <style>
+        body {
+            background-color: beige;
+        }
+    </style>
+</head>
+<body>
+    <div style="font-family:KarmaticArcade; position:absolute; left:-1000px; visibility:hidden;">.</div>
+    <script src="./lib/phaser.min.js"></script>
+    <script src="./src/prefab/Toy.js"></script>
+    <script src="./src/scenes/Play.js"></script>
+    <script src="./src/scenes/World1.js"></script>
+    <script src="./src/scenes/Credits.js"></script>
+     <script src="./src/scenes/Menu.js"></script>
+     <script src="./src/scenes/Pause.js"></script>
+    <script src="./src/prefab/Ferret.js"></script>
+    <script src="./src/scenes/tutorial.js"></script>
+    <script src="./src/prefab/Platform.js"></script>
+    
+    <script src="./src/main.js"></script>
+</body>
+</html>

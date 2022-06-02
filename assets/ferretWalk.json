@@ -1,0 +1,72 @@
+{ "frames": [
+   {
+    "filename": "ferretWalk 0.aseprite",
+    "frame": { "x": 0, "y": 0, "w": 50, "h": 22 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 50, "h": 22 },
+    "sourceSize": { "w": 50, "h": 22 },
+    "duration": 100
+   },
+   {
+    "filename": "ferretWalk 1.aseprite",
+    "frame": { "x": 50, "y": 0, "w": 50, "h": 22 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 50, "h": 22 },
+    "sourceSize": { "w": 50, "h": 22 },
+    "duration": 100
+   },
+   {
+    "filename": "ferretWalk 2.aseprite",
+    "frame": { "x": 100, "y": 0, "w": 50, "h": 22 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 50, "h": 22 },
+    "sourceSize": { "w": 50, "h": 22 },
+    "duration": 100
+   },
+   {
+    "filename": "ferretWalk 3.aseprite",
+    "frame": { "x": 150, "y": 0, "w": 50, "h": 22 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 50, "h": 22 },
+    "sourceSize": { "w": 50, "h": 22 },
+    "duration": 100
+   },
+   {
+    "filename": "ferretWalk 4.aseprite",
+    "frame": { "x": 200, "y": 0, "w": 50, "h": 22 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 50, "h": 22 },
+    "sourceSize": { "w": 50, "h": 22 },
+    "duration": 100
+   },
+   {
+    "filename": "ferretWalk 5.aseprite",
+    "frame": { "x": 250, "y": 0, "w": 50, "h": 22 },
+    "rotated": false,
+    "trimmed": false,
+    "spriteSourceSize": { "x": 0, "y": 0, "w": 50, "h": 22 },
+    "sourceSize": { "w": 50, "h": 22 },
+    "duration": 100
+   }
+ ],
+ "meta": {
+  "app": "http://www.aseprite.org/",
+  "version": "1.2.21-dev",
+  "image": "ferretWalk.png",
+  "format": "RGBA8888",
+  "size": { "w": 300, "h": 22 },
+  "scale": "1",
+  "frameTags": [
+  ],
+  "layers": [
+   { "name": "Layer 1", "opacity": 255, "blendMode": "normal" }
+  ],
+  "slices": [
+  ]
+ }
+}

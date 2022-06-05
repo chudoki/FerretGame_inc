@@ -22,6 +22,10 @@ class World1 extends Phaser.Scene {
     };
 
     create() {
+         
+
+
+
         const shapes = this.cache.json.get("shapes");
         this.game_started = false;
         this.frames = 0;
@@ -31,9 +35,10 @@ class World1 extends Phaser.Scene {
         const bgLayer = map.createLayer("nullCollides", tileset, 0, 0);
         this.width = map.width*32;
         this.height = map.height*32;
+        this.grabjoint =[];
        // for( let i = 200; i < this.width; i += 500){
             
-            this.matter.add.sprite(0,128, 'sheet', 'block.png', {shape: shapes.block, restitution: .1, frictionAir: .01 }).setScale(.05,.05).setTint(99999);
+            this.matter.add.sprite(0,128, 'sheet', 'block.png', {shape: shapes.block, restitution: .1, frictionAir: .01,name:'elburro' }).setScale(.05,.05).setTint(99999);
 
       //  }
         groundLayer.setCollisionByProperty({ collides: true });
@@ -62,7 +67,7 @@ class World1 extends Phaser.Scene {
         //bodies
          
         var Bodies = Phaser.Physics.Matter.Matter.Bodies;
-        var rect = Bodies.rectangle(0, 0, 50, 22);
+        var rect = Bodies.rectangle(0, 0, 50, 22,{label:'player'});
        var rectangler = Bodies.rectangle(-30,0,14,10,{isSensor: true,label: 'grableft'});
        var rectanglel = Bodies.rectangle(30,0,14,10,{isSensor: true,label: 'grabright'});
 
@@ -81,7 +86,53 @@ class World1 extends Phaser.Scene {
 
         this.player.body.sleepThreshold = -1;
         this.cameras.main.startFollow(this.player);
+        
+        this.button1 = new Button (this,100,50,'block',0,{name:'button1'}).setStatic(true);
+        this.button2 =new Button (this,200,50,'block',0,{name:'button2'}).setStatic(true);
+        this.button3 = new Button (this,300,50,'block',0,{name:'button3'}).setStatic(true);
+        this.button4 = new Button (this,400,50,'block',0,{name:'button4'}).setStatic(true);
+        
+        
+        
+        
+
+        
+
+            Phaser.Physics.Matter.Matter.Body.set( this.button1.body,
+                { label :('button1'),inertia:Infinity,Static:true});
+                
+            Phaser.Physics.Matter.Matter.Body.set( this.button2.body,
+                { label :('button2'),inertia:Infinity,Static:true});
+        
+                Phaser.Physics.Matter.Matter.Body.set( this.button3.body,
+                    { label :('button3'),inertia:Infinity,Static:true});
+                    
+            Phaser.Physics.Matter.Matter.Body.set( this.button4.body,
+                { label :('button4'),inertia:Infinity,Static:true});
+
+
+
+        this.plat1 = new Platform (this,200,50,'block',0,{name:'plat1'}).setStatic(true);
+        this.plat2 = new Platform (this,200,100,'block',0,{name:'plat2'}).setStatic(true);
+        this.plat3 = new Platform (this,200,150,'block',0,{name:'plat3'}).setStatic(true);
+        this.plat4 = new Platform (this,200,200,'block',0,{name:'plat4'}).setStatic(true);           
         //Pause control
+
+        Phaser.Physics.Matter.Matter.Body.set( this.plat1.body,
+            { label :('plat1'),inertia:Infinity,Static:true});
+            
+        Phaser.Physics.Matter.Matter.Body.set( this.plat2.body,
+            { label :('plat2'),inertia:Infinity,Static:true});
+    
+            Phaser.Physics.Matter.Matter.Body.set( this.plat3.body,
+                { label :('plat3'),inertia:Infinity,Static:true});
+                
+        Phaser.Physics.Matter.Matter.Body.set( this.plat4.body,
+            { label :('plat4'),inertia:Infinity,Static:true});
+        
+          //this.plat1.on('pmove1',this.platmove);
+              
+          
         this.events.on('resume', (scene, data)=> {
             if (data){
                
@@ -91,15 +142,44 @@ class World1 extends Phaser.Scene {
             }
         });
         //collision callback
+        
         this.matter.world.on('collisionactive', function (event) {
             //  Loop through all of the collision pairs
            
             var pairs = event.pairs;
-           
+            
             for (var i = 0; i < pairs.length; i++)
             {
+                
                 var bodyA = pairs[i].bodyA;
                 var bodyB = pairs[i].bodyB;
+                if(bodyA.isSensor===false&&bodyB.isSensor===false){
+                if(bodyA.label!='player'&&bodyB.label!='player'){
+                if( bodyA.label==='button4'||bodyB.label==='button4' ){
+                   // bodyA.emit('pressed',this.plat4);
+                 // console.log(bodyA);
+                 butpres4 = true;
+                }
+                
+                if( bodyA.label==='button3'||bodyB.label==='button3' ){
+                    // bodyA.emit('pressed',this.plat4);
+                  // console.log(bodyA);
+                  butpres3 = true;
+                 }
+                
+                 if( bodyA.label==='button2'||bodyB.label==='button2' ){
+                    // bodyA.emit('pressed',this.plat4);
+                  // console.log(bodyA);
+                  butpres2 = true;
+                 }
+               
+                 if( bodyA.label==='button1'||bodyB.label==='button1' ){
+                    // bodyA.emit('pressed',this.plat4);
+                  // console.log(bodyA);
+                  butpres1 = true;
+                 }
+                }
+            }
              //  console.log(bodyA);
                 //  We only want sensor collisions
                 if (pairs[i].isSensor)
@@ -157,7 +237,7 @@ class World1 extends Phaser.Scene {
             }
         });
     }
-
+   
     update() {
         if(!this.game_started){
             this.player.y = 200;
@@ -176,6 +256,20 @@ class World1 extends Phaser.Scene {
           //  console.log(canJump+"two")
         }
         
+        if(butpres4){
+           this.plat4.body.x++;
+           console.log(this.plat4.body.x);
+           this.plat4.x++;
+                }
+        if(butpres3){
+         console.log("amogus");
+            }
+            if(butpres2){
+             console.log("amogus");
+                 }
+                if(butpres1){
+                 console.log("amogus");
+                        }
         if (this.cursors.left.isDown)
         {
             if (!this.player.anims.isPlaying || this.player.anims.currentAnim.key === 'idle') {
@@ -249,10 +343,10 @@ class World1 extends Phaser.Scene {
             console.log(flipstat +"b4")
             this.matter.body.setInertia(bodylab.gameObject.body,Infinity);
             console.log( +"4tr")
-            
+          // this.grabjoint.push( this.matter.add.joint(this.player.body,bodylab.gameObject.body,100,.2,{label:"kicked like a mule"}));
            //if(this.player.body.velocity) 
            bodylab.gameObject.setVelocityX(this.player.body.velocity.x);
-
+           
            bodylab.gameObject.setVelocityY(this.player.body.velocity.y);
            
             grabdown = true;
@@ -260,7 +354,12 @@ class World1 extends Phaser.Scene {
         if(this.cursors.shift.isUp && grabdown === true && bodylab.gameObject!=null ){
           //  console.log(bodylab.gameObject.body.inertia)
             this.matter.body.setInertia(bodylab.gameObject.body,3515736.4);
-           // console.log(bodylab.gameObject.body.inertia +"bro")
+          //  console.log(this.grabjoint[0].label +"bro");
+           // this.matter.world.removeConstraint(this.grabjoint[0]);
+            //this.grabjoint.pop();
+            //console.log(this.grabjoint.label +"burro");
+            //this.matter.world.destroy(this.grabjoint);
+            
             cangrabl = false;
             cangrabr = false;
             grabdown = false;

@@ -12,10 +12,10 @@ class World1 extends Phaser.Scene {
         this.load.atlas('sheet', 'assets/sprites/shapePack-0.png', 'assets/sprites/shapePack.json');
         this.load.audio('sfx_bump', 'assets/bump.wav');
         this.load.json("shapes", "assets/sprites/shapes.json");
-        this.load.tilemapTiledJSON("map", "assets/tiledV1.json");
+        this.load.tilemapTiledJSON("map", "assets/tiledV2.json");
         this.load.image(
-          "tiledV1",
-          "assets/tiledV1.png"
+          "tileset",
+          "assets/tileset.png"
         );
         this.load.spritesheet('ferretW', 'assets/ferretWalk.png', {frameWidth: 50, frameHeight: 22 });
 
@@ -26,20 +26,20 @@ class World1 extends Phaser.Scene {
         this.game_started = false;
         this.frames = 0;
         const map = this.make.tilemap({ key: "map" });
-        const tileset = map.addTilesetImage("tiledV1");
-        const groundLayer = map.createLayer("Ground", tileset, 0, 0);
-        const bgLayer = map.createLayer("nullCollides", tileset, 0, 0);
+        const tileset = map.addTilesetImage("tileset");
+        const layer1 = map.createLayer("Tile Layer 1", tileset, 0, 0);
+        const itemLayer = map.createLayer("Item layer", tileset, 0, 0);
+        
         this.width = map.width*32;
         this.height = map.height*32;
-       // for( let i = 200; i < this.width; i += 500){
             
-            this.matter.add.sprite(0,128, 'sheet', 'block.png', {shape: shapes.block, restitution: .1, frictionAir: .01 }).setScale(.05,.05).setTint(99999);
+        
 
-      //  }
-        groundLayer.setCollisionByProperty({ collides: true });
-        bgLayer.setCollisionByProperty({ collides: true });
-        this.matter.world.convertTilemapLayer(groundLayer);
-        this.matter.world.convertTilemapLayer(bgLayer);
+        layer1.setCollisionByProperty({ collides: true });
+        itemLayer.setCollisionByProperty({ collides: true });
+        
+        this.matter.world.convertTilemapLayer(layer1);
+        this.matter.world.convertTilemapLayer(itemLayer);
 
         this.playThud = false;
         this.exitTrigger = false;
@@ -62,6 +62,10 @@ class World1 extends Phaser.Scene {
         //bodies
          
         var Bodies = Phaser.Physics.Matter.Matter.Bodies;
+        this.block1A = new Toy(this, 0,128, 'sheet', 'block.png', {shape: shapes.block, restitution: .1, frictionAir: .01}).setScale(.05,.05).setTint(99999);
+        this.block1B = new Toy(this, 64,128, 'sheet', 'block.png', {shape: shapes.block, restitution: .1, frictionAir: .01 }).setScale(.05,.05).setTint(99999);
+        Phaser.Physics.Matter.Matter.Body.set( this.block1A.body, { label: 'block1A'});
+        Phaser.Physics.Matter.Matter.Body.set( this.block1B.body, { label: 'block1B'});
         var rect = Bodies.rectangle(0, 0, 50, 22);
        var rectangler = Bodies.rectangle(-30,0,14,10,{isSensor: true,label: 'grableft'});
        var rectanglel = Bodies.rectangle(30,0,14,10,{isSensor: true,label: 'grabright'});
@@ -107,15 +111,19 @@ class World1 extends Phaser.Scene {
                     
                     var playerBody;
                     var blockBody;
+                    
                     if (bodyA.isSensor)
                     {
                         blockBody = bodyB;
+                        
+                    console.log(blockBody.label);
                         playerBody = bodyA;
                     }
                     else if (bodyB.isSensor)
                     {
                         blockBody = bodyA;
-                    
+                        
+                    console.log(blockBody.label);
                         playerBody = bodyB;
                     }
                     else {
@@ -156,6 +164,10 @@ class World1 extends Phaser.Scene {
                 }
             }
         });
+        
+        const layer2 = map.createLayer("Tile Layer 2", tileset, 0, 0);
+        layer2.setCollisionByProperty({ collides: true });
+        this.matter.world.convertTilemapLayer(layer2);
     }
 
     update() {
@@ -197,7 +209,7 @@ class World1 extends Phaser.Scene {
               }
             if (this.cursors.up.isDown && canJump === true )
             {
-                  this.player.setVelocityY(-12);
+                  this.player.setVelocityY(-14);
             }
         }
         else if (this.cursors.right.isDown)
@@ -241,7 +253,7 @@ class World1 extends Phaser.Scene {
     
         if (this.cursors.up.isDown && canJump === true )
         {
-            this.player.setVelocityY(-12);
+            this.player.setVelocityY(-14);
         }
 
         if(this.cursors.shift.isDown && ((cangrabl ===true && flipstat===false) || (cangrabr===true && flipstat===true)) && bodylab.gameObject!=null && bottomlab.gameObject!=bodylab.gameObject){

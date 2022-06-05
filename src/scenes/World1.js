@@ -50,8 +50,8 @@ let scoreConfig = {
         const layer1 = map.createLayer("Tile Layer 1", tileset, 0, 0);
         const itemLayer = map.createLayer("Item layer", tileset, 0, 0);
 
-        this.width = map.width * 32;
-        this.height = map.height * 32;
+        this.width = map.width * 320;
+        this.height = map.height * 320;
         this.grabjoint = [];
         // for( let i = 200; i < this.width; i += 500){
 
@@ -98,6 +98,9 @@ let scoreConfig = {
                 
             })
          });
+        this.toy = new Toy(this,0,1000,'sheet','Button.png')
+        Phaser.Physics.Matter.Matter.Body.set(this.toy.body,
+            {  label: ('toy'), inertia: Infinity, Static: true });
 
         var Bodies = Phaser.Physics.Matter.Matter.Bodies;
         var rect = Bodies.rectangle(0, 0, 50, 22, { label: 'player' });
@@ -124,9 +127,8 @@ let scoreConfig = {
         this.ball2 = this.matter.add.sprite(3*32,15*32,'sheet', 'gBall.png', { shape: shapes.gBall, name: 'ball' });
 
         this.button1 = new Button (this,29 * 32, 10 * 32 - 5, 'sheet', 'Button.png', {name: 'button1' }).setStatic(true);
-        // this.button2 = new Button (this,200,50,'block',0,{shape: shapes.Button, name:'button2'}).setStatic(true);
-        // this.button3 = new Button (this,300,50,'block',0,{name:'button3'}).setStatic(true);
-        // this.button4 = new Button (this,400,50,'block',0,{name:'button4'}).setStatic(true);
+        this.button2 = new Button (this,22 * 32, 29 * 32 - 5, 'sheet', 'redButton.png', {name: 'button2' }).setStatic(true);
+        this.button3 = new Button (this,29 * 32, 38 * 32 - 5, 'sheet', 'blueButton.png', {name: 'button3' }).setStatic(true);
 
 
 
@@ -137,19 +139,20 @@ let scoreConfig = {
         Phaser.Physics.Matter.Matter.Body.set(this.button1.body,
             { shape: shapes.Button, label: ('button1'), inertia: Infinity, Static: true });
 
-        // Phaser.Physics.Matter.Matter.Body.set( this.button2.body,
-        //     { label :('button2'),inertia:Infinity,Static:true});
+         Phaser.Physics.Matter.Matter.Body.set( this.button2.body,
+            { label :('button2'),inertia:Infinity,Static:true});
 
-        //     Phaser.Physics.Matter.Matter.Body.set( this.button3.body,
-        //         { label :('button3'),inertia:Infinity,Static:true});
+             Phaser.Physics.Matter.Matter.Body.set( this.button3.body,
+                 { label :('button3'),inertia:Infinity,Static:true});
 
         // Phaser.Physics.Matter.Matter.Body.set( this.button4.body,
         //     { label :('button4'),inertia:Infinity,Static:true});
 
 
 
-        this.plat1 = new Platform( this, 36*32 +12, 6*32+16, 'sheet', 'Gate.png', {name: 'plat1' }).setStatic(true).setAngle(90);
-        
+        this.plat1 = new Platform( this, 37*32 +28, 8*32+8, 'sheet', 'Gate.png', {name: 'plat1' }).setStatic(true).setAngle(90);
+        this.plat2 = new Platform( this, 5*32 +16, 19*32+16, 'sheet', 'redGate.png', {name: 'plat2' }).setStatic(true);
+        this.plat3 = new Platform( this, 23*32 +16, 38*32+12, 'sheet', 'blueGate.png', {name: 'plat3' }).setStatic(true);
 
         // this.plat2 = new Platform(this, 200, 100, 'block', 0, { name: 'plat2' }).setStatic(true);
         // this.plat3 = new Platform(this, 200, 150, 'block', 0, { name: 'plat3' }).setStatic(true);
@@ -159,11 +162,11 @@ let scoreConfig = {
         Phaser.Physics.Matter.Matter.Body.set(this.plat1.body,
             { shape: shapes.Gate, label: ('plat1'), inertia: Infinity, Static: true });
 
-        // Phaser.Physics.Matter.Matter.Body.set(this.plat2.body,
-        //     { label: ('plat2'), inertia: Infinity, Static: true });
+         Phaser.Physics.Matter.Matter.Body.set(this.plat2.body,
+         { label: ('plat2'), inertia: Infinity, Static: true });
 
-        // Phaser.Physics.Matter.Matter.Body.set(this.plat3.body,
-        //     { label: ('plat3'), inertia: Infinity, Static: true });
+         Phaser.Physics.Matter.Matter.Body.set(this.plat3.body,
+             { label: ('plat3'), inertia: Infinity, Static: true });
 
         // Phaser.Physics.Matter.Matter.Body.set(this.plat4.body,
         //     { label: ('plat4'), inertia: Infinity, Static: true });
@@ -239,11 +242,15 @@ let scoreConfig = {
                     else {
                         continue;
                     }
+                    if(blockBody.label==='toy'){
+                       endgame=true;
+                    }
                     if (playerBody.label === 'bottom') {
                         //console.log("hullo"+canJump);
                         bottomlab = blockBody;
                         canJump = true;
                     }
+
                     if(blockBody.label==='foodbit'){
                         blockBody.gameObject.destroy();
                        score++;
@@ -288,6 +295,10 @@ let scoreConfig = {
 
     update() {
         this.scoreboard.text = score+"/x";
+        if(endgame){
+            this.scene.launch('VictoryScene');
+            this.scene.stop();
+        }
         if (!this.game_started) {
             this.player.y = 200;
             this.game_started = true;
@@ -312,13 +323,22 @@ let scoreConfig = {
         }
         if (butpres3) {
             console.log("amogus");
+
         }
         if (butpres2) {
             console.log("amogus");
+            if(this.plat2.x<12+2*32){
+                butpres2=false;
+            }
+            else{
+                console.log("amogus");
+                //this.plat1.body.x++;
+                this.plat2.x--;
+            }
         }
         console.log(this.plat1.x);
         if (butpres1) {
-            if(this.plat1.y<0+4*32){
+            if(this.plat1.y<0+5*32){
                 butpres1=false;
             }
             else{
@@ -394,9 +414,9 @@ let scoreConfig = {
 
         if (this.cursors.shift.isDown && ((cangrabl === true && flipstat === false) || (cangrabr === true && flipstat === true)) && bodylab.gameObject != null && bottomlab.gameObject != bodylab.gameObject) {
 
-            //console.log(flipstat + "b4")
+           
             this.matter.body.setInertia(bodylab.gameObject.body, Infinity);
-          //  console.log(+"4tr")
+         
             // this.grabjoint.push( this.matter.add.joint(this.player.body,bodylab.gameObject.body,100,.2,{label:"kicked like a mule"}));
             // if(this.player.body.velocity) 
             bodylab.gameObject.setVelocityX(this.player.body.velocity.x);

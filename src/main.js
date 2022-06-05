@@ -8,7 +8,7 @@ let config = {
         default: 'matter',
         matter: {
             gravity: {x: 0, y: 3},
-            //debug: true,
+            debug: true,
             fps: 10,
             enableSleeping: true,
             setBounds: {
@@ -41,5 +41,7 @@ let cangrabr = false;
 let flipstat = false;
 let grabdown = false;
 let endgame = false;
-let bodylab,bottomlab; 
+let bodylab,bottomlab;
+let butpres1,butpres2,butpres3,butpres4;
+ 
  

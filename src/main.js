@@ -1,14 +1,14 @@
 
 let config = {
     type: Phaser.CANVAS,
-    width: 1080,
-    height: 1080,
+    width: 640,
+    height: 360,
     scene: [Menu,Level1,tutorial,World1,Credits,Pause],
     physics: {
         default: 'matter',
         matter: {
             gravity: {x: 0, y: 3},
-            debug: true,
+            //debug: true,
             fps: 10,
             enableSleeping: true,
             setBounds: {

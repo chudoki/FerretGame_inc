@@ -319,8 +319,8 @@
 				"label": "",
 				"isSensor": false,
 				"vertices": [
-					[ { "x":0, "y":27 }, { "x":5, "y":32 }, { "x":91, "y":32 }, { "x":96, "y":27 }, { "x":91, "y":0 }, { "x":5, "y":0 }, { "x":0, "y":5 } ],
-					[ { "x":96, "y":5 }, { "x":91, "y":0 }, { "x":96, "y":27 } ]
+					[ { "x":0, "y":25 }, { "x":5, "y":30 }, { "x":91, "y":30 }, { "x":96, "y":25 }, { "x":91, "y":2 }, { "x":5, "y":2 }, { "x":0, "y":7 } ],
+					[ { "x":96, "y":7 }, { "x":91, "y":2 }, { "x":96, "y":25 } ]
 				]
 			}
 		]
@@ -452,10 +452,10 @@
 	"blueButton": {
 		"type": "fromPhysicsEditor",
 		"label": "blueButton",
-		"isStatic": false,
+		"isStatic": true,
 		"density": 0.10000000149011612,
-		"restitution": 0,
-		"friction": 0.10000000149011612,
+		"restitution": 0.5,
+		"friction": 0.5,
 		"frictionAir": 0.009999999776482582,
 		"frictionStatic": 0.5,
 		"collisionFilter": {

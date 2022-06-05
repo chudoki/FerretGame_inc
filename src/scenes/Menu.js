@@ -59,7 +59,7 @@ class Menu extends Phaser.Scene {
               this.start = false;
            }
            if(this.howStart == true){
-              this.scene.start('creditsScene');
+              this.scene.start('tutorialScene');
               this.howStart = false;
            }
            this.button.on("pointerdown", () => {

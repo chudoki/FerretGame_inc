@@ -1,9 +1,9 @@
 
 let config = {
     type: Phaser.CANVAS,
-    width: 640,
-    height: 360,
-    scene: [Menu,Level1,tutorial,World1,Credits,Pause],
+    width: 1640,
+    height: 1360,
+    scene: [Menu,Level1,tutorial,World1,Credits,Pause,Victory],
     physics: {
         default: 'matter',
         matter: {
@@ -43,5 +43,5 @@ let grabdown = false;
 let endgame = false;
 let bodylab,bottomlab;
 let butpres1,butpres2,butpres3,butpres4;
-let score = 0;
+let score = 10;
  

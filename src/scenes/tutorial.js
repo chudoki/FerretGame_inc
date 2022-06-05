@@ -14,11 +14,14 @@ class tutorial extends Phaser.Scene {
         
       
         this.exit = false;
+        this.startgame = false;
         // KB input
         keyESC2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
         // buttons
         this.menuButton = this.add.image(game.canvas.width/2, game.canvas.height/2+70, 'menuButton').setScale(.3);
         this.menuButton.setInteractive();
+        this.playButton = this.add.image(game.canvas.width/2, game.canvas.height/2+140, 'menuButton').setScale(.3);
+        this.playButton.setInteractive();
     }
 
     update(){
@@ -30,6 +33,13 @@ class tutorial extends Phaser.Scene {
             this.scene.stop();
             
         }
+        this.playButton.on("pointerdown", () => {this.startgame = true;});
+
+        if(this.startgame){
+             this.scene.start('world1Scene');
+             this.scene.stop();
+        }
+    
     }
 
 }

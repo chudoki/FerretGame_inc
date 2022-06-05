@@ -135,7 +135,7 @@ let scoreConfig = {
 
 
         Phaser.Physics.Matter.Matter.Body.set(this.button1.body,
-            { shape: shapes.Button, label: ('button1'), inertia: Infinity, Static: true });
+            { label: ('button1'), inertia: Infinity, Static: true });
 
         // Phaser.Physics.Matter.Matter.Body.set( this.button2.body,
         //     { label :('button2'),inertia:Infinity,Static:true});
@@ -148,7 +148,7 @@ let scoreConfig = {
 
 
 
-        this.plat1 = new Platform( this, 36*32 +12, 6*32+16, 'sheet', 'Gate.png', {name: 'plat1' }).setStatic(true).setAngle(90);
+        this.plat1 = new Platform( this, 37*32+24, 8*32+16, 'sheet', 'Gate.png', {name: 'plat1' }).setStatic(true).setAngle(90);
         
 
         // this.plat2 = new Platform(this, 200, 100, 'block', 0, { name: 'plat2' }).setStatic(true);
@@ -244,7 +244,7 @@ let scoreConfig = {
                         bottomlab = blockBody;
                         canJump = true;
                     }
-                    if(blockBody.label==='foodbit'){
+                    if(blockBody.label==='foodbit' && playerBody.label != 'top'){
                         blockBody.gameObject.destroy();
                        score++;
                        console.log(score);
@@ -298,12 +298,7 @@ let scoreConfig = {
         }
         //console.log(canJump)
         //  console.log(this.player.body.velocity.y+"one")
-        if (Math.abs(this.player.body.velocity.y) >= 1) {
-            canJump = false;
-            // console.log(this.player.body.velocity.y+"one")
-            //  canJump = true;
-            //  console.log(canJump+"two")
-        }
+        
 
         if (butpres4) {
             // this.plat4.body.x++;
@@ -390,6 +385,13 @@ let scoreConfig = {
 
         if (this.cursors.up.isDown && canJump === true) {
             this.player.setVelocityY(-14);
+            canJump = false;
+        }
+        if (Math.abs(this.player.body.velocity.y) >= 1) {
+            canJump = false;
+            // console.log(this.player.body.velocity.y+"one")
+            //  canJump = true;
+            //  console.log(canJump+"two")
         }
 
         if (this.cursors.shift.isDown && ((cangrabl === true && flipstat === false) || (cangrabr === true && flipstat === true)) && bodylab.gameObject != null && bottomlab.gameObject != bodylab.gameObject) {
@@ -408,7 +410,7 @@ let scoreConfig = {
 
         if (this.cursors.shift.isUp && grabdown === true && bodylab.gameObject != null) {
             //  console.log(bodylab.gameObject.body.inertia)
-            this.matter.body.setInertia(bodylab.gameObject.body, 3515736.4);
+            this.matter.body.setInertia(bodylab.gameObject.body, 73600.4);
             //  console.log(this.grabjoint[0].label +"bro");
             // this.matter.world.removeConstraint(this.grabjoint[0]);
             //this.grabjoint.pop();

@@ -17,12 +17,28 @@ class World1 extends Phaser.Scene {
             "tileset",
             "assets/tileset.png"
         );
+        this.load.spritesheet('tilesheet',"assets/tileset.png",{
+            frameWidth:32,
+            frameHeight:32
+        });
         this.load.spritesheet('ferretW', 'assets/ferretWalk.png', { frameWidth: 50, frameHeight: 22 });
 
     };
 
     create() {
-
+        score = 0;
+let scoreConfig = {
+    fontFamily: 'Arial',
+    fontSize: '28px',
+    backgroundColor: '#FF0000',
+    color: '#843605',
+    align: 'right',
+    padding: {
+        top: 5,
+        bottom: 5,
+    },
+    fixedWidth: 100
+}
 
 
 
@@ -67,6 +83,21 @@ class World1 extends Phaser.Scene {
         this.matter.world.setBounds(0, 0, this.width, this.height);
         this.cameras.main.setBounds(0, 0, this.width, this.height);
         //bodies
+        this.foods = map.createFromObjects("Collectibles",{
+            name: "food",
+            key:"tilesheet",
+            frame:6,
+            classType: Food
+        });
+         
+        
+
+         this.foods.map((food)=>{
+            Phaser.Physics.Matter.Matter.Body.set(food.body,{
+                label:'foodbit'
+                
+            })
+         });
 
         var Bodies = Phaser.Physics.Matter.Matter.Bodies;
         var rect = Bodies.rectangle(0, 0, 50, 22, { label: 'player' });
@@ -75,8 +106,8 @@ class World1 extends Phaser.Scene {
 
         var rectangT = Bodies.rectangle(0, -16, 36, 28, { isSensor: true, label: 'top' });
         var rectangB = Bodies.rectangle(0, 16, 36, 28, { isSensor: true, label: 'bottom' });
-
-
+        this.scoreboard =this.add.text(0 , 0,0+"/x",scoreConfig).setScrollFactor(0); 
+        
         var compoundBody = Phaser.Physics.Matter.Matter.Body.create({
             parts: [rect, rectangler, rectanglel, rectangT, rectangB],
             inertia: Infinity
@@ -92,8 +123,8 @@ class World1 extends Phaser.Scene {
         this.ball1 = this.matter.add.sprite(3*32,15*32,'sheet', 'gBall.png', { shape: shapes.gBall, name: 'ball' });
         this.ball2 = this.matter.add.sprite(3*32,15*32,'sheet', 'gBall.png', { shape: shapes.gBall, name: 'ball' });
 
-        this.button1 = this.matter.add.sprite(29 * 32, 10 * 32 - 5, 'sheet', 'Button.png', {name: 'button1' }).setStatic(true);
-        // this.button2 =new Button (this,200,50,'block',0,{shape: shapes.Button, name:'button2'}).setStatic(true);
+        this.button1 = new Button (this,29 * 32, 10 * 32 - 5, 'sheet', 'Button.png', {name: 'button1' }).setStatic(true);
+        // this.button2 = new Button (this,200,50,'block',0,{shape: shapes.Button, name:'button2'}).setStatic(true);
         // this.button3 = new Button (this,300,50,'block',0,{name:'button3'}).setStatic(true);
         // this.button4 = new Button (this,400,50,'block',0,{name:'button4'}).setStatic(true);
 
@@ -117,7 +148,7 @@ class World1 extends Phaser.Scene {
 
 
 
-        this.plat1 = new Platform( this, 5*32 +16, 19*32+16, 'sheet', 'Gate.png', {name: 'plat1' }).setStatic(true);
+        this.plat1 = new Platform( this, 36*32 +12, 6*32+16, 'sheet', 'Gate.png', {name: 'plat1' }).setStatic(true).setAngle(90);
         
 
         // this.plat2 = new Platform(this, 200, 100, 'block', 0, { name: 'plat2' }).setStatic(true);
@@ -196,13 +227,13 @@ class World1 extends Phaser.Scene {
                     if (bodyA.isSensor) {
                         blockBody = bodyB;
 
-                        console.log(blockBody.label);
+                  //      console.log(blockBody.label);
                         playerBody = bodyA;
                     }
                     else if (bodyB.isSensor) {
                         blockBody = bodyA;
 
-                        console.log(blockBody.label);
+                      //  console.log(blockBody.label);
                         playerBody = bodyB;
                     }
                     else {
@@ -212,6 +243,12 @@ class World1 extends Phaser.Scene {
                         //console.log("hullo"+canJump);
                         bottomlab = blockBody;
                         canJump = true;
+                    }
+                    if(blockBody.label==='foodbit'){
+                        blockBody.gameObject.destroy();
+                       score++;
+                       console.log(score);
+                       
                     }
                     if (blockBody.label == 'Rectangle Body' || blockBody.label == 'Body') {
                         continue;
@@ -250,6 +287,7 @@ class World1 extends Phaser.Scene {
     }
 
     update() {
+        this.scoreboard.text = score+"/x";
         if (!this.game_started) {
             this.player.y = 200;
             this.game_started = true;
@@ -280,13 +318,13 @@ class World1 extends Phaser.Scene {
         }
         console.log(this.plat1.x);
         if (butpres1) {
-            if(this.plat1.x<0+this.plat1.width*0.8){
+            if(this.plat1.y<0+4*32){
                 butpres1=false;
             }
             else{
                 console.log("amogus");
-                this.plat1.body.x++;
-                this.plat1.x--;
+                //this.plat1.body.x++;
+                this.plat1.y--;
             }
             
             
@@ -356,9 +394,9 @@ class World1 extends Phaser.Scene {
 
         if (this.cursors.shift.isDown && ((cangrabl === true && flipstat === false) || (cangrabr === true && flipstat === true)) && bodylab.gameObject != null && bottomlab.gameObject != bodylab.gameObject) {
 
-            console.log(flipstat + "b4")
+            //console.log(flipstat + "b4")
             this.matter.body.setInertia(bodylab.gameObject.body, Infinity);
-            console.log(+"4tr")
+          //  console.log(+"4tr")
             // this.grabjoint.push( this.matter.add.joint(this.player.body,bodylab.gameObject.body,100,.2,{label:"kicked like a mule"}));
             // if(this.player.body.velocity) 
             bodylab.gameObject.setVelocityX(this.player.body.velocity.x);

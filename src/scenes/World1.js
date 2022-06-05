@@ -98,7 +98,7 @@ let scoreConfig = {
                 
             })
          });
-        this.toy = new Toy(this,0,1000,'sheet','Button.png')
+        this.toy = new Toy(this,50,100,'sheet','Button.png')
         Phaser.Physics.Matter.Matter.Body.set(this.toy.body,
             {  label: ('toy'), inertia: Infinity, Static: true });
 
@@ -259,6 +259,7 @@ let scoreConfig = {
                     if (blockBody.label == 'Rectangle Body' || blockBody.label == 'Body') {
                         continue;
                     }
+                    if(blockBody.label === 'bl')
                     if (playerBody.label === 'grableft' && flipstat === false && blockBody != null) {
                         cangrabl = true;
                         bodylab = blockBody;
@@ -295,6 +296,7 @@ let scoreConfig = {
     update() {
         this.scoreboard.text = score+"/x";
         if(endgame){
+            endgame=false;
             this.scene.launch('VictoryScene');
             this.scene.stop();
         }

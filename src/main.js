@@ -43,5 +43,5 @@ let grabdown = false;
 let endgame = false;
 let bodylab,bottomlab;
 let butpres1,butpres2,butpres3,butpres4;
- 
+let score = 0;
  

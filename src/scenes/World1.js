@@ -361,8 +361,8 @@ class World1 extends Phaser.Scene {
                 this.plat3.x--;
             }
         }
-        if (this.butpres2) {
-            if (soundp2) {
+        if (butpres2) {
+            if (this.soundp2) {
                 this.gatesound.play();
                 this.soundp2 = false;
             }

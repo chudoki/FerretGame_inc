@@ -1,7 +1,8 @@
 class Pause extends Phaser.Scene {
     preload(){
-        this.load.image('playButton', 'assets/buttons/levelsButton.png');
-        this.load.image('menuButton', 'assets/buttons/testingButton.png');
+        this.load.image('playButton', 'assets/buttons/playButton.png');
+        this.load.image('menuButton', 'assets/buttons/menuButton.png');
+        this.load.image('PausedBanner', 'assets/PausedBanner.png');
     }
     constructor(){
        super("PauseScreen");
@@ -13,17 +14,12 @@ class Pause extends Phaser.Scene {
         this.exit = false;
        
         keyESC2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
-        // "Paused" text
-        let PauseStyle = {
-            fontFamily: 'FFFFORWA',
-            fontSize: "16px",
-            align: 'center',
-        }
-        this.pauseText = this.add.text(game.canvas.width/2, game.canvas.height/2-32, "PAUSED", PauseStyle).setOrigin(0.5);
+        // "Paused" image
+        this.pauseText = this.add.image(640/2,360/3, 'PausedBanner').setOrigin(0.5);
         // buttons
-        this.playButton = this.add.image(game.canvas.width/2, game.canvas.height/2, 'playButton').setScale(.2);
+        this.playButton = this.add.image(this.pauseText.x-this.pauseText.width/2+62, this.pauseText.y+62, 'playButton');
         this.playButton.setInteractive();
-        this.menuButton = this.add.image(game.canvas.width/2, game.canvas.height/2+32, 'menuButton').setScale(.2);
+        this.menuButton = this.add.image(this.pauseText.x+this.pauseText.width/2-62, this.pauseText.y+62, 'menuButton');
         this.menuButton.setInteractive();
     }
 

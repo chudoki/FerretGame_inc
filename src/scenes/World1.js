@@ -3,98 +3,71 @@ class World1 extends Phaser.Scene {
         super("world1Scene");
     }
 
-    preload() {
-
-        this.load.image('ferret', 'assets/sprites/ferret player.png');
-        this.load.image('platform', 'assets/sprites/platform.png');
-        this.load.image('platform', 'assets/sprites/platform.png');
-        this.load.atlas('sheet', 'assets/atlases/matterObjects-0.png', 'assets/atlases/matterObjects.json');
-        this.load.image('orangeButton', 'assets/sprites/orangeButton.png');
-        this.load.image('orangeGate', 'assets/sprites/orangeGate.png');
-        this.load.audio('sfx_bump', 'assets/bump.wav');
-        this.load.json("shapes", "assets/physicsObjects.json");
-        this.load.tilemapTiledJSON("map", "assets/tiledV2.json");
-        this.load.image(
-            "tileset",
-            "assets/tileset.png"
-        );
-        this.load.spritesheet('tilesheet', "assets/tileset.png", {
-            frameWidth: 32,
-            frameHeight: 32
-        });
-        this.load.spritesheet('ferretW', 'assets/ferretWalk.png', { frameWidth: 50, frameHeight: 22 });
-        this.load.image('bg', 'assets/background.png');
-
-    };
-
     create() {
 
-        this.startingPos = { x: 2 * 32, y: 200};
+        // local variables
+        this.startingPos = { x: 2 * 32, y: 7*32};
         this.bg = this.add.image(0, 0, 'bg').setOrigin(0, 0);
-
-
         score = 0;
         this.soundp1 = true;
         this.soundp2 = true;
         this.soundp3 = true;
         this.soundp4 = true;
         this.soundp5 = true;
+        this.game_started = false;
+        this.frames = 0;
+        this.grabjoint = [];
+        
         let scoreConfig = {
-            fontFamily: 'Arial',
-            fontSize: '28px',
-            backgroundColor: '#FF0000',
-            color: '#843605',
+            fontFamily: 'FFFFORWA',
+            fontSize: '16px',
+            color: '#ffffff',
             align: 'right',
+            backgroundColor: '#31222c' ,
             padding: {
                 top: 5,
                 bottom: 5,
+                right: 10,
             },
-            fixedWidth: 100
+            fixedWidth: 115,
         }
 
 
-
+        //take in physics coordinates
         const shapes = this.cache.json.get("shapes");
-        this.game_started = false;
-        this.frames = 0;
+
+        // first set of layers for tilesheets
         const map = this.make.tilemap({ key: "map" });
         const tileset = map.addTilesetImage("tileset");
         const layer1 = map.createLayer("Tile Layer 1", tileset, 0, 0);
         const itemLayer = map.createLayer("Item layer", tileset, 0, 0);
-
-        this.width = map.width * 320;
-        this.height = map.height * 320;
-        this.grabjoint = [];
-
-
-        //this.matter.add.sprite(29*32,9*32,'sheet','Button.png',{shape: shapes.Button, name:'button1'}).setStatic(true);
-
         layer1.setCollisionByProperty({ collides: true });
         itemLayer.setCollisionByProperty({ collides: true });
-
         this.matter.world.convertTilemapLayer(layer1);
         this.matter.world.convertTilemapLayer(itemLayer);
+        const layer3 = map.createLayer("Tile Layer 3", tileset, 0, 0);
+        layer3.setCollisionByProperty({ collides: true });
+        this.matter.world.convertTilemapLayer(layer3);
 
-        this.playThud = false;
-        this.exitTrigger = false;
         //background music
-
         this.bgm = this.sound.add('sunnyMorning', { loop: true, volume: 0.1 });
         this.gatesound = this.sound.add('gateServo', { loop: false, volume: 0.8 });
-        this.bgm.play();
+        if(bgmOn==false){
+            this.bgm.play();
+            bgmOn=true;
+        }
 
         // input keys
         keyESC = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
         this.cursors = this.input.keyboard.createCursorKeys();
 
-        //take in physics coordinates
-        //const shapes = this.cache.json.get("shapes");
-
-        //add balls
-
-        // camera
+        // width and height data
+        this.width = map.width * 32;
+        this.height = map.height * 32;
+        // camera and world bounds
         this.matter.world.setBounds(0, 0, this.width, this.height);
         this.cameras.main.setBounds(0, 0, this.width, this.height);
+        this.cameras.main.setBackgroundColor('#31222c');
 
 
         // initializes the food collectables
@@ -113,11 +86,12 @@ class World1 extends Phaser.Scene {
 
             })
         });
-        this.toy = new Toy(this, 2 * 32, 61 * 32, 'sheet', 'Button.png')
+
+        // The missing treasure/toy that player is looking to find
+        this.toy = new Toy(this, 2 * 32, 60 * 32, 'Toy', 0)
         Phaser.Physics.Matter.Matter.Body.set(this.toy.body,
             { label: ('toy'), inertia: Infinity, Static: true });
 
-        // scoreboard tracks number of collectibles
 
 
         // player with multiple sensors on each side for collision detecting
@@ -140,25 +114,25 @@ class World1 extends Phaser.Scene {
 
 
         // large set of balls for activating final button
-        this.matter.add.sprite(1.5 * 32, 15 * 32, 'sheet', 'rBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 })
-        this.matter.add.sprite(2.5 * 32, 15 * 32, 'sheet', 'gBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 })
-        this.matter.add.sprite(3.5 * 32, 15 * 32, 'sheet', 'bBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 })
-        this.matter.add.sprite(4.5 * 32, 15 * 32, 'sheet', 'oBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 })
-        this.matter.add.sprite(5.5 * 32, 15 * 32, 'sheet', 'pBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 })
-        this.matter.add.sprite(6.5 * 32, 15 * 32, 'sheet', 'rBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 })
-        this.matter.add.sprite(7.5 * 32, 15 * 32, 'sheet', 'gBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 })
-        this.matter.add.sprite(8.5 * 32, 15 * 32, 'sheet', 'bBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 })
-        this.matter.add.sprite(3 * 32, 16 * 32, 'sheet', 'oBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 })
-        this.matter.add.sprite(4 * 32, 16 * 32, 'sheet', 'pBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 })
-        this.matter.add.sprite(5 * 32, 16 * 32, 'sheet', 'rBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 })
-        this.matter.add.sprite(6 * 32, 16 * 32, 'sheet', 'gBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 })
-        this.matter.add.sprite(7 * 32, 16 * 32, 'sheet', 'oBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 })
-        this.matter.add.sprite(4 * 32, 17 * 32, 'sheet', 'pBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 })
-        this.matter.add.sprite(5 * 32, 17 * 32, 'sheet', 'rBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 })
-        this.matter.add.sprite(6 * 32, 17 * 32, 'sheet', 'gBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 })
-        this.matter.add.sprite(4.5 * 32, 18 * 32, 'sheet', 'bBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 })
-        this.matter.add.sprite(5.5 * 32, 18 * 32, 'sheet', 'oBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 })
-        this.matter.add.sprite(6.5 * 32, 18 * 32, 'sheet', 'pBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 })
+        this.matter.add.sprite(1.5 * 32, 15 * 32, 'sheet', 'rBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 });
+        this.matter.add.sprite(2.5 * 32, 15 * 32, 'sheet', 'gBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 });
+        this.matter.add.sprite(3.5 * 32, 15 * 32, 'sheet', 'bBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 });
+        this.matter.add.sprite(4.5 * 32, 15 * 32, 'sheet', 'oBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 });
+        this.matter.add.sprite(5.5 * 32, 15 * 32, 'sheet', 'pBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 });
+        this.matter.add.sprite(6.5 * 32, 15 * 32, 'sheet', 'rBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 });
+        this.matter.add.sprite(7.5 * 32, 15 * 32, 'sheet', 'gBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 });
+        this.matter.add.sprite(8.5 * 32, 15 * 32, 'sheet', 'bBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 });
+        this.matter.add.sprite(3 * 32, 16 * 32, 'sheet', 'oBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 });
+        this.matter.add.sprite(4 * 32, 16 * 32, 'sheet', 'pBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 });
+        this.matter.add.sprite(5 * 32, 16 * 32, 'sheet', 'rBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 });
+        this.matter.add.sprite(6 * 32, 16 * 32, 'sheet', 'gBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 });
+        this.matter.add.sprite(7 * 32, 16 * 32, 'sheet', 'oBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 });
+        this.matter.add.sprite(4 * 32, 17 * 32, 'sheet', 'pBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 });
+        this.matter.add.sprite(5 * 32, 17 * 32, 'sheet', 'rBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 });
+        this.matter.add.sprite(6 * 32, 17 * 32, 'sheet', 'gBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 });
+        this.matter.add.sprite(4.5 * 32, 18 * 32, 'sheet', 'bBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 });
+        this.matter.add.sprite(5.5 * 32, 18 * 32, 'sheet', 'oBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 });
+        this.matter.add.sprite(6.5 * 32, 18 * 32, 'sheet', 'pBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 });
 
         // creates boxes to touch buttons that trigger gates
         this.box1 = new Box(this, 34 * 32, 9 * 32, 'sheet', 'Box.png', { shape: shapes.Box, restitution: .1, frictionAir: .01, name: 'elburro' }).setTint(99999);
@@ -198,7 +172,6 @@ class World1 extends Phaser.Scene {
         Phaser.Physics.Matter.Matter.Body.set(this.plat6.body, { label: ('plat6'), inertia: Infinity, Static: true });
 
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
-            this.bgm.stop()
             this.scene.launch('VictoryScene')
             this.scene.stop()
         });
@@ -206,7 +179,6 @@ class World1 extends Phaser.Scene {
         // event for pausing scene
         this.events.on('resume', (scene, data) => {
             if (data) {
-
                 this.bgm.stop();
                 this.scene.start('Menu');
             }
@@ -290,18 +262,25 @@ class World1 extends Phaser.Scene {
             }
         });
 
+        // topmost layers
         const layer2 = map.createLayer("Tile Layer 2", tileset, 0, 0);
         layer2.setCollisionByProperty({ collides: true });
         this.matter.world.convertTilemapLayer(layer2);
-        this.scoreboard = this.add.text(0, 0, 0 + "/x", scoreConfig).setScrollFactor(0);
+
+        // scoreboard tracks number of collectibles
+        this.scoreboard = this.add.text(0, 0, 0 + "/22", scoreConfig).setScrollFactor(0);
+        this.scoreboardIcon = this.add.image(25, 20, 'Food',0).setScrollFactor(0).setOrigin(0.5, 0.5);
     }
 
     update() {
         // parralax bg logic
-        this.bg.x = -140 + (this.player.x - 160) * .8;
-        this.bg.y = -160 + (this.player.y - 160) * .8;
-
-        this.scoreboard.text = score + "/x";
+        if(this.player.x>320+this.player.width && this.player.x<this.width-360+this.player.width){
+            this.bg.x = -311 + (this.player.x) * .8445;
+        }
+        if(this.player.y>180+this.player.height && this.player.y<this.height-180-this.player.height){
+            this.bg.y = -180 + (this.player.y) * .7445;
+        }
+        this.scoreboard.text = score + "/22";
         if (endgame) {
 
             this.cameras.main.fadeOut(1000, 0, 0, 0);
@@ -446,7 +425,7 @@ class World1 extends Phaser.Scene {
             }
         }
 
-        if (this.cursors.up.isDown && canJump === true) {
+        if ((this.cursors.up.isDown || this.cursors.space.isDown) && canJump === true) {
             this.player.setVelocityY(-14);
             canJump = false;
         }

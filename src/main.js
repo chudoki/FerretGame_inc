@@ -8,7 +8,7 @@ let config = {
         default: 'matter',
         matter: {
             gravity: {x: 0, y: 3},
-            //debug: true,
+            debug: true,
             enableSleeping: true,
             setBounds: {
                 left: true,

@@ -23,10 +23,16 @@ class World1 extends Phaser.Scene {
             frameHeight: 32
         });
         this.load.spritesheet('ferretW', 'assets/ferretWalk.png', { frameWidth: 50, frameHeight: 22 });
+        this.load.image('bg', 'assets/background.png');
 
     };
 
     create() {
+
+        this.startingPos = {x:64, y:200};
+        this.bg = this.add.image(0,0,'bg').setOrigin(0,0);
+
+
         score = 0;
         let scoreConfig = {
             fontFamily: 'Arial',
@@ -102,12 +108,12 @@ class World1 extends Phaser.Scene {
 
             })
          });
-        this.toy = new Toy(this,50,100,'sheet','Button.png')
+        this.toy = new Toy(this,2*32,61*32,'sheet','Button.png')
         Phaser.Physics.Matter.Matter.Body.set(this.toy.body,
             {  label: ('toy'), inertia: Infinity, Static: true });
 
         // scoreboard tracks number of collectibles
-        this.scoreboard = this.add.text(0, 0, 0 + "/x", scoreConfig).setScrollFactor(0);
+        this.scoreboard = this.add.text(-100, -100, 0 + "/x", scoreConfig).setScrollFactor(0);
         
         // player with multiple sensors on each side for collision detecting
         var Bodies = Phaser.Physics.Matter.Matter.Bodies;
@@ -183,7 +189,7 @@ class World1 extends Phaser.Scene {
         Phaser.Physics.Matter.Matter.Body.set(this.plat4.body, { label: ('plat4'), inertia: Infinity, Static: true });
         this.plat5 = new Platform(this, 37 * 32 + 16, 50 * 32+12, 'sheet', 'greenGate.png', { name: 'plat5' }).setStatic(true);
         Phaser.Physics.Matter.Matter.Body.set(this.plat5.body, { label: ('plat5'), inertia: Infinity, Static: true });
-        this.plat6 = new Platform(this, 6 * 32, 59 * 32 + 12, 'orangeGate', 0, { name: 'plat6' }).setStatic(true).setAngle(90);
+        this.plat6 = new Platform(this, 6 * 32+16, 59 * 32 + 12, 'orangeGate', 0, { name: 'plat6' }).setStatic(true).setAngle(90);
         Phaser.Physics.Matter.Matter.Body.set(this.plat6.body, { label: ('plat6'), inertia: Infinity, Static: true });
 
 
@@ -210,7 +216,6 @@ class World1 extends Phaser.Scene {
                 if (bodyA.isSensor === false && bodyB.isSensor === false) {
                     if (bodyA.label != 'player' && bodyB.label != 'player') {
                         if (bodyA.label === 'button5' || bodyB.label === 'button5') {
-                            console.log("HIIIII");
                             butpres5 = true;
                         }
                         if (bodyA.label === 'button4' || bodyB.label === 'button4') {
@@ -270,7 +275,6 @@ class World1 extends Phaser.Scene {
                     if (blockBody.label != 'Box') {
                         continue;
                     }
-                    if(blockBody.label === 'bl')
                     if (playerBody.label === 'grableft' && flipstat === false && blockBody != null) {
                         cangrabl = true;
                         bodylab = blockBody;
@@ -295,6 +299,10 @@ class World1 extends Phaser.Scene {
     }
 
     update() {
+        // parralax bg logic
+        this.bg.x = -140+(this.player.x-160)*.8;
+        this.bg.y = -160+(this.player.y-160)*.8;
+
         this.scoreboard.text = score+"/x";
         if(endgame){
             endgame=false;
@@ -303,8 +311,8 @@ class World1 extends Phaser.Scene {
             this.scene.stop();
         }
         if (!this.game_started) {
-            this.player.x = 64; 
-            this.player.y = 200;
+            this.player.x = this.startingPos.x; 
+            this.player.y = this.startingPos.y;
             this.game_started = true;
         }
         if (Phaser.Input.Keyboard.JustDown(keyESC)) {
@@ -316,15 +324,16 @@ class World1 extends Phaser.Scene {
 
 
         if (butpres5) {
+            
             if (this.plat6.y < 56 * 32 + 12 ) {
                 butpres5 = false;
+                platsound === true
             }
             else {
                 this.plat6.y--;
             }
         }
         if (butpres4) {
-            console.log("HIIIII2");
             if (this.plat4.x > 13 * 32 + 16) {
                 if (this.plat5.y < 52 * 32+12){
                     this.plat5.y++;

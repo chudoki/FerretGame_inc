@@ -29,16 +29,16 @@ class World1 extends Phaser.Scene {
 
     create() {
 
-        this.startingPos = {x:64, y:200};
-        this.bg = this.add.image(0,0,'bg').setOrigin(0,0);
+        this.startingPos = { x: 2 * 32, y: 200};
+        this.bg = this.add.image(0, 0, 'bg').setOrigin(0, 0);
 
 
         score = 0;
-         this.soundp1 = true;
-  this.soundp2 =true;
- this.soundp3 = true;
- this.soundp4 =true;
- this.soundp5 = true;
+        this.soundp1 = true;
+        this.soundp2 = true;
+        this.soundp3 = true;
+        this.soundp4 = true;
+        this.soundp5 = true;
         let scoreConfig = {
             fontFamily: 'Arial',
             fontSize: '28px',
@@ -66,7 +66,7 @@ class World1 extends Phaser.Scene {
         this.height = map.height * 320;
         this.grabjoint = [];
 
-        
+
         //this.matter.add.sprite(29*32,9*32,'sheet','Button.png',{shape: shapes.Button, name:'button1'}).setStatic(true);
 
         layer1.setCollisionByProperty({ collides: true });
@@ -80,7 +80,7 @@ class World1 extends Phaser.Scene {
         //background music
 
         this.bgm = this.sound.add('sunnyMorning', { loop: true, volume: 0.1 });
-        this.gatesound = this.sound.add('gateServo',{loop: false,volume: 0.8});
+        this.gatesound = this.sound.add('gateServo', { loop: false, volume: 0.8 });
         this.bgm.play();
 
         // input keys
@@ -95,8 +95,8 @@ class World1 extends Phaser.Scene {
         // camera
         this.matter.world.setBounds(0, 0, this.width, this.height);
         this.cameras.main.setBounds(0, 0, this.width, this.height);
-        
-        
+
+
         // initializes the food collectables
         this.foods = map.createFromObjects("Collectibles", {
             name: "food",
@@ -112,14 +112,14 @@ class World1 extends Phaser.Scene {
                 label: 'foodbit'
 
             })
-         });
-        this.toy = new Toy(this,2*32,61*32,'sheet','Button.png')
+        });
+        this.toy = new Toy(this, 2 * 32, 61 * 32, 'sheet', 'Button.png')
         Phaser.Physics.Matter.Matter.Body.set(this.toy.body,
-            {  label: ('toy'), inertia: Infinity, Static: true });
+            { label: ('toy'), inertia: Infinity, Static: true });
 
         // scoreboard tracks number of collectibles
-        
-        
+
+
         // player with multiple sensors on each side for collision detecting
         var Bodies = Phaser.Physics.Matter.Matter.Bodies;
         var rect = Bodies.rectangle(0, 0, 50, 22, { label: 'player' });
@@ -137,8 +137,8 @@ class World1 extends Phaser.Scene {
 
         // camera tracks player
         this.cameras.main.startFollow(this.player);
-        
-        
+
+
         // large set of balls for activating final button
         this.matter.add.sprite(1.5 * 32, 15 * 32, 'sheet', 'rBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 })
         this.matter.add.sprite(2.5 * 32, 15 * 32, 'sheet', 'gBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 })
@@ -179,9 +179,9 @@ class World1 extends Phaser.Scene {
         Phaser.Physics.Matter.Matter.Body.set(this.button3.body, { label: ('button3'), inertia: Infinity, Static: true });
         this.button4 = new Button(this, 10 * 32, 69 * 32 - 5, 'sheet', 'greenButton.png', { name: 'button4' }).setStatic(true);
         Phaser.Physics.Matter.Matter.Body.set(this.button4.body, { label: ('button4'), inertia: Infinity, Static: true });
-        this.button5 = new Button(this, 16 * 32+16, 58 * 32 - 5, 'orangeButton', 0, { name: 'button5' }).setStatic(true);
+        this.button5 = new Button(this, 16 * 32 + 16, 58 * 32 - 5, 'orangeButton', 0, { name: 'button5' }).setStatic(true);
         Phaser.Physics.Matter.Matter.Body.set(this.button5.body, { label: ('button5'), inertia: Infinity, Static: true });
-        
+
 
         // Gates (platforms) that move in response to a box pressing a button
         this.plat1 = new Platform(this, 37 * 32 + 28, 8 * 32 + 8, 'sheet', 'Gate.png', { name: 'plat1' }).setStatic(true).setAngle(90);
@@ -192,16 +192,16 @@ class World1 extends Phaser.Scene {
         Phaser.Physics.Matter.Matter.Body.set(this.plat3.body, { label: ('plat3'), inertia: Infinity, Static: true });
         this.plat4 = new Platform(this, 16 * 32 + 16, 55 * 32 + 12, 'sheet', 'greenGate.png', { name: 'plat4' }).setStatic(true);
         Phaser.Physics.Matter.Matter.Body.set(this.plat4.body, { label: ('plat4'), inertia: Infinity, Static: true });
-        this.plat5 = new Platform(this, 37 * 32 + 16, 50 * 32+12, 'sheet', 'greenGate.png', { name: 'plat5' }).setStatic(true);
+        this.plat5 = new Platform(this, 37 * 32 + 16, 50 * 32 + 12, 'sheet', 'greenGate.png', { name: 'plat5' }).setStatic(true);
         Phaser.Physics.Matter.Matter.Body.set(this.plat5.body, { label: ('plat5'), inertia: Infinity, Static: true });
-        this.plat6 = new Platform(this, 6 * 32+16, 59 * 32 + 12, 'orangeGate', 0, { name: 'plat6' }).setStatic(true).setAngle(90);
+        this.plat6 = new Platform(this, 6 * 32 + 16, 59 * 32 + 12, 'orangeGate', 0, { name: 'plat6' }).setStatic(true).setAngle(90);
         Phaser.Physics.Matter.Matter.Body.set(this.plat6.body, { label: ('plat6'), inertia: Infinity, Static: true });
 
-        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam,effect)=>{
+        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam, effect) => {
             this.bgm.stop()
-          this.scene.launch('VictoryScene')
-          this.scene.stop()
-      });
+            this.scene.launch('VictoryScene')
+            this.scene.stop()
+        });
 
         // event for pausing scene
         this.events.on('resume', (scene, data) => {
@@ -211,7 +211,7 @@ class World1 extends Phaser.Scene {
                 this.scene.start('Menu');
             }
         });
-        
+
         // collision callback
         this.matter.world.on('collisionactive', function (event) {
             //  Loop through all of the collision pairs
@@ -243,7 +243,7 @@ class World1 extends Phaser.Scene {
                         }
                     }
                 }
-                
+
                 //  We only want sensor collisions
                 if (pairs[i].isSensor) {
 
@@ -298,20 +298,19 @@ class World1 extends Phaser.Scene {
 
     update() {
         // parralax bg logic
-        this.bg.x = -140+(this.player.x-160)*.8;
-        this.bg.y = -160+(this.player.y-160)*.8;
+        this.bg.x = -140 + (this.player.x - 160) * .8;
+        this.bg.y = -160 + (this.player.y - 160) * .8;
 
-        this.scoreboard.text = score+"/x";
-        if(endgame){
-           
+        this.scoreboard.text = score + "/x";
+        if (endgame) {
+
             this.cameras.main.fadeOut(1000, 0, 0, 0);
-            
-            endgame=false;
-        
-     
-    }
+            endgame = false;
+
+
+        }
         if (!this.game_started) {
-            this.player.x = this.startingPos.x; 
+            this.player.x = this.startingPos.x;
             this.player.y = this.startingPos.y;
             this.game_started = true;
         }
@@ -322,12 +321,12 @@ class World1 extends Phaser.Scene {
 
 
         if (butpres5) {
-            if(this.soundp5){
+            if (this.soundp5) {
                 this.gatesound.play();
-                this.soundp5= false;
+                this.soundp5 = false;
             }
-            if (this.plat6.y < 56 * 32 + 12 ) {
-              //  this.gatesound.stop();
+            if (this.plat6.y < 56 * 32 + 12) {
+                //  this.gatesound.stop();
                 butpres5 = false;
                 platsound === true
             }
@@ -336,24 +335,24 @@ class World1 extends Phaser.Scene {
             }
         }
         if (butpres4) {
-            if(this.soundp4){
+            if (this.soundp4) {
                 this.gatesound.play();
-                this.soundp4= false;
+                this.soundp4 = false;
             }
             if (this.plat4.x > 13 * 32 + 16) {
-                if (this.plat5.y < 52 * 32+12){
+                if (this.plat5.y < 52 * 32 + 12) {
                     this.plat5.y++;
                 }
                 this.plat4.x--;
             }
-            else{
+            else {
                 butpres4 = false;
             }
         }
         if (butpres3) {
-            if(this.soundp3){
+            if (this.soundp3) {
                 this.gatesound.play();
-                this.soundp3= false;
+                this.soundp3 = false;
             }
             if (this.plat3.x < 20 * 32 + 16) {
                 butpres3 = false;
@@ -363,11 +362,11 @@ class World1 extends Phaser.Scene {
             }
         }
         if (this.butpres2) {
-            if(soundp2){
+            if (soundp2) {
                 this.gatesound.play();
-                this.soundp2= false;
+                this.soundp2 = false;
             }
-            
+
             if (this.plat2.x < 12 + 2 * 32) {
                 butpres2 = false;
             }
@@ -376,9 +375,9 @@ class World1 extends Phaser.Scene {
             }
         }
         if (butpres1) {
-            if(this.soundp1){
+            if (this.soundp1) {
                 this.gatesound.play();
-                this.soundp1= false;
+                this.soundp1 = false;
             }
             if (this.plat1.y < 0 + 5 * 32) {
                 butpres1 = false;

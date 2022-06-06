@@ -67,7 +67,9 @@ class World1 extends Phaser.Scene {
         this.playThud = false;
         this.exitTrigger = false;
         //background music
+
         this.bgm = this.sound.add('sunnyMorning', { loop: true, volume: 0.3 });
+        
         this.bgm.play();
 
         // input keys
@@ -99,12 +101,10 @@ class World1 extends Phaser.Scene {
                 label: 'foodbit'
 
             })
-        });
-        
-        
-        // missing toy which is the winning condition
-        this.toy = new Toy(this, 0, 1000, 'sheet', 'Button.png')
-        Phaser.Physics.Matter.Matter.Body.set(this.toy.body,{ label: ('toy'), inertia: Infinity, Static: true });
+         });
+        this.toy = new Toy(this,50,100,'sheet','Button.png')
+        Phaser.Physics.Matter.Matter.Body.set(this.toy.body,
+            {  label: ('toy'), inertia: Infinity, Static: true });
 
         // scoreboard tracks number of collectibles
         this.scoreboard = this.add.text(0, 0, 0 + "/x", scoreConfig).setScrollFactor(0);
@@ -193,8 +193,8 @@ class World1 extends Phaser.Scene {
             if (data) {
 
                 this.bgm.stop();
-                this.scene.start('PauseScreen');
-                this.scene.pause();
+                this.scene.start('Menu');
+               // this.scene.pause();
             }
         });
 
@@ -270,6 +270,7 @@ class World1 extends Phaser.Scene {
                     if (blockBody.label != 'Box') {
                         continue;
                     }
+                    if(blockBody.label === 'bl')
                     if (playerBody.label === 'grableft' && flipstat === false && blockBody != null) {
                         cangrabl = true;
                         bodylab = blockBody;
@@ -294,8 +295,10 @@ class World1 extends Phaser.Scene {
     }
 
     update() {
-        this.scoreboard.text = score + "/x";
-        if (endgame) {
+        this.scoreboard.text = score+"/x";
+        if(endgame){
+            endgame=false;
+              this.bgm.stop();
             this.scene.launch('VictoryScene');
             this.scene.stop();
         }

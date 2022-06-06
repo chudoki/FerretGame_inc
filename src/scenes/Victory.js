@@ -13,7 +13,7 @@ class Victory extends Phaser.Scene {
     create(){
         
         let Textstyle = {
-            fontFamily: 'KarmaticArcade',
+            fontFamily: 'FFFFORWA',
             fontSize: "16px",
             align: 'center',
         }
@@ -26,7 +26,7 @@ class Victory extends Phaser.Scene {
         this.menuButton.setInteractive();
         this.add.text(game.canvas.width/2, game.canvas.height/2-128,score+"/x",Textstyle);
                                                               //that onehundred right below should be replaced by max numb of collectables
-        this.add.text(game.canvas.width/2, game.canvas.height/2-64,(score/100)*100 +" Completed",Textstyle);
+        this.add.text(game.canvas.width/2, game.canvas.height/2-64,(score/100)*100 +" % Completed",Textstyle);
         if(score/100 <=.3){
              rank = 'F';
         }
@@ -55,7 +55,7 @@ class Victory extends Phaser.Scene {
         this.menuButton.on("pointerdown", () => {this.exit = true;});
 
         if (Phaser.Input.Keyboard.JustDown(keyESC2) || this.exit){
-            this.scene.start('Menu');
+            this.scene.start('creditsScene');
             this.scene.stop();
             
         }

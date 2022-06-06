@@ -12,17 +12,17 @@ class Credits extends Phaser.Scene {
 
     create(){
         let CreditStyle = {
-            fontFamily: 'KarmaticArcade',
+            fontFamily: 'FFFFORWA',
             fontSize: "16px",
             align: 'center',
         }
          this.credtext = [];
         this.credtext[0] = this.add.text(game.canvas.width/2, game.canvas.height/5.5, "Hunt for ", {
-            fontFamily: 'KarmaticArcade',
+            fontFamily: 'FFFFORWA',
             fontSize: '16px',
             }).setOrigin(0.5,0);
          this.credtext[1] = this.add.text(game.canvas.width/2, game.canvas.height/3.3, "the Ferret's Treasure", {
-            fontFamily: 'KarmaticArcade',
+            fontFamily: 'FFFFORWA',
             fontSize: '16px',
             }).setOrigin(0.5,0);
             this.credtext[2] = this.add.text(game.canvas.width/2, game.canvas.height/3.3+64, "A game by", CreditStyle).setOrigin(0.5);
@@ -64,6 +64,7 @@ class Credits extends Phaser.Scene {
 
         if (Phaser.Input.Keyboard.JustDown(keyESC2) || this.exit){
             this.scene.start('Menu');
+            
             this.scene.stop();
             
         }

@@ -34,6 +34,11 @@ class World1 extends Phaser.Scene {
 
 
         score = 0;
+         this.soundp1 = true;
+  this.soundp2 =true;
+ this.soundp3 = true;
+ this.soundp4 =true;
+ this.soundp5 = true;
         let scoreConfig = {
             fontFamily: 'Arial',
             fontSize: '28px',
@@ -74,8 +79,8 @@ class World1 extends Phaser.Scene {
         this.exitTrigger = false;
         //background music
 
-        this.bgm = this.sound.add('sunnyMorning', { loop: true, volume: 0.3 });
-        
+        this.bgm = this.sound.add('sunnyMorning', { loop: true, volume: 0.1 });
+        this.gatesound = this.sound.add('gateServo',{loop: false,volume: 0.8});
         this.bgm.play();
 
         // input keys
@@ -113,7 +118,11 @@ class World1 extends Phaser.Scene {
             {  label: ('toy'), inertia: Infinity, Static: true });
 
         // scoreboard tracks number of collectibles
+<<<<<<< HEAD
         this.scoreboard = this.add.text(-100, -100, 0 + "/x", scoreConfig).setScrollFactor(0);
+=======
+        
+>>>>>>> 7c8c679f8beabc15a47733defb8bef4f842cc3b6
         
         // player with multiple sensors on each side for collision detecting
         var Bodies = Phaser.Physics.Matter.Matter.Bodies;
@@ -192,7 +201,12 @@ class World1 extends Phaser.Scene {
         this.plat6 = new Platform(this, 6 * 32+16, 59 * 32 + 12, 'orangeGate', 0, { name: 'plat6' }).setStatic(true).setAngle(90);
         Phaser.Physics.Matter.Matter.Body.set(this.plat6.body, { label: ('plat6'), inertia: Infinity, Static: true });
 
-
+        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam,effect)=>{
+            this.bgm.stop()
+          console.log("sus imposter");
+          this.scene.launch('VictoryScene')
+          this.scene.stop()
+      });
 
         // event for pausing scene
         this.events.on('resume', (scene, data) => {
@@ -203,7 +217,7 @@ class World1 extends Phaser.Scene {
                // this.scene.pause();
             }
         });
-
+        
         //collision callback
         this.matter.world.on('collisionactive', function (event) {
             //  Loop through all of the collision pairs
@@ -296,6 +310,7 @@ class World1 extends Phaser.Scene {
         const layer2 = map.createLayer("Tile Layer 2", tileset, 0, 0);
         layer2.setCollisionByProperty({ collides: true });
         this.matter.world.convertTilemapLayer(layer2);
+        this.scoreboard = this.add.text(0, 0, 0 + "/x", scoreConfig).setScrollFactor(0);
     }
 
     update() {
@@ -305,11 +320,14 @@ class World1 extends Phaser.Scene {
 
         this.scoreboard.text = score+"/x";
         if(endgame){
+            console.log("whould appear once");
+           
+            this.cameras.main.fadeOut(1000, 0, 0, 0);
+            
             endgame=false;
-              this.bgm.stop();
-            this.scene.launch('VictoryScene');
-            this.scene.stop();
-        }
+        
+     
+    }
         if (!this.game_started) {
             this.player.x = this.startingPos.x; 
             this.player.y = this.startingPos.y;
@@ -324,8 +342,16 @@ class World1 extends Phaser.Scene {
 
 
         if (butpres5) {
+<<<<<<< HEAD
             
+=======
+            if(this.soundp5){
+                this.gatesound.play();
+                this.soundp5= false;
+            }
+>>>>>>> 7c8c679f8beabc15a47733defb8bef4f842cc3b6
             if (this.plat6.y < 56 * 32 + 12 ) {
+              //  this.gatesound.stop();
                 butpres5 = false;
                 platsound === true
             }
@@ -334,6 +360,14 @@ class World1 extends Phaser.Scene {
             }
         }
         if (butpres4) {
+<<<<<<< HEAD
+=======
+            console.log("HIIIII2");
+            if(this.soundp4){
+                this.gatesound.play();
+                this.soundp4= false;
+            }
+>>>>>>> 7c8c679f8beabc15a47733defb8bef4f842cc3b6
             if (this.plat4.x > 13 * 32 + 16) {
                 if (this.plat5.y < 52 * 32+12){
                     this.plat5.y++;
@@ -345,6 +379,10 @@ class World1 extends Phaser.Scene {
             }
         }
         if (butpres3) {
+            if(this.soundp3){
+                this.gatesound.play();
+                this.soundp3= false;
+            }
             if (this.plat3.x < 20 * 32 + 16) {
                 butpres3 = false;
             }
@@ -352,7 +390,11 @@ class World1 extends Phaser.Scene {
                 this.plat3.x--;
             }
         }
-        if (butpres2) {
+        if (this.butpres2) {
+            if(soundp2){
+                this.gatesound.play();
+                this.soundp2= false;
+            }
             console.log("amogus");
             if (this.plat2.x < 12 + 2 * 32) {
                 butpres2 = false;
@@ -363,7 +405,14 @@ class World1 extends Phaser.Scene {
         }
         console.log(this.plat1.x);
         if (butpres1) {
+           /// console.log("amogus");
+            if(this.soundp1){
+                console.log("sussyballs");
+                this.gatesound.play();
+                this.soundp1= false;
+            }
             if (this.plat1.y < 0 + 5 * 32) {
+                 //this.gatesound.stop();
                 butpres1 = false;
             }
             else {

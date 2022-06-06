@@ -11,7 +11,7 @@ class Pause extends Phaser.Scene {
         
         this.start = false;
         this.exit = false;
-        // KB input
+       
         keyESC2 = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
         // "Paused" text
         let PauseStyle = {

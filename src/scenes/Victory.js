@@ -1,17 +1,18 @@
 class Victory extends Phaser.Scene {
+    constructor(){
+        super("VictoryScene");
+     }
     preload(){
         this.load.image('menuButton', 'assets/buttons/testingButton.png');
        // this.load.image('bg', 'assets/bg.png');
-        
+        this.load.image('sussybaka','assets/amogus.png');
         
        // this.load.image('instructionSheet', 'assets/howto.png');
     }
-    constructor(){
-       super("VictoryScene");
-    }
-
+   
     create(){
-        
+        this.cameras.main.fadeIn(1000,0,0,0);
+        // KB input
         let Textstyle = {
             fontFamily: 'FFFFORWA',
             fontSize: "16px",
@@ -24,6 +25,8 @@ class Victory extends Phaser.Scene {
         let rank;
         this.menuButton = this.add.image(game.canvas.width/2, game.canvas.height/2+270, 'menuButton').setScale(.3);
         this.menuButton.setInteractive();
+        this.amogus = this.add.image(game.canvas.width/2,game.canvas.height/2,'sussybaka');
+        this.timedEvent = this.time.addEvent({delay: 1000, callback:this.showimage,callbackScope:this});      
         this.add.text(game.canvas.width/2, game.canvas.height/2-128,score+"/x",Textstyle);
                                                               //that onehundred right below should be replaced by max numb of collectables
         this.add.text(game.canvas.width/2, game.canvas.height/2-64,(score/100)*100 +" % Completed",Textstyle);
@@ -46,7 +49,7 @@ class Victory extends Phaser.Scene {
             rank = 'S++';
             }
         this.add.text(game.canvas.width/2, game.canvas.height/2,rank,Textstyle)
-
+      
         
     }
 
@@ -59,6 +62,12 @@ class Victory extends Phaser.Scene {
             this.scene.stop();
             
         }
+    }
+
+    
+    showimage(){
+        console.log("bruj");
+        this.amogus.destroy();
     }
 
 }

@@ -118,11 +118,7 @@ class World1 extends Phaser.Scene {
             {  label: ('toy'), inertia: Infinity, Static: true });
 
         // scoreboard tracks number of collectibles
-<<<<<<< HEAD
-        this.scoreboard = this.add.text(-100, -100, 0 + "/x", scoreConfig).setScrollFactor(0);
-=======
         
->>>>>>> 7c8c679f8beabc15a47733defb8bef4f842cc3b6
         
         // player with multiple sensors on each side for collision detecting
         var Bodies = Phaser.Physics.Matter.Matter.Bodies;
@@ -203,7 +199,6 @@ class World1 extends Phaser.Scene {
 
         this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam,effect)=>{
             this.bgm.stop()
-          console.log("sus imposter");
           this.scene.launch('VictoryScene')
           this.scene.stop()
       });
@@ -214,11 +209,10 @@ class World1 extends Phaser.Scene {
 
                 this.bgm.stop();
                 this.scene.start('Menu');
-               // this.scene.pause();
             }
         });
         
-        //collision callback
+        // collision callback
         this.matter.world.on('collisionactive', function (event) {
             //  Loop through all of the collision pairs
             var pairs = event.pairs;
@@ -233,7 +227,6 @@ class World1 extends Phaser.Scene {
                             butpres5 = true;
                         }
                         if (bodyA.label === 'button4' || bodyB.label === 'button4') {
-                            console.log("HIIIII4");
                             butpres4 = true;
                         }
 
@@ -250,7 +243,7 @@ class World1 extends Phaser.Scene {
                         }
                     }
                 }
-                //  console.log(bodyA);
+                
                 //  We only want sensor collisions
                 if (pairs[i].isSensor) {
 
@@ -259,14 +252,10 @@ class World1 extends Phaser.Scene {
 
                     if (bodyA.isSensor) {
                         blockBody = bodyB;
-
-                        //      console.log(blockBody.label);
                         playerBody = bodyA;
                     }
                     else if (bodyB.isSensor) {
                         blockBody = bodyA;
-
-                        //  console.log(blockBody.label);
                         playerBody = bodyB;
                     }
                     else {
@@ -276,14 +265,12 @@ class World1 extends Phaser.Scene {
                         endgame = true;
                     }
                     if (playerBody.label === 'bottom') {
-                        //console.log("hullo"+canJump);
                         bottomlab = blockBody;
                         canJump = true;
                     }
                     if (blockBody.label === 'foodbit' && playerBody.label != 'top') {
                         blockBody.gameObject.destroy();
                         score++;
-                        console.log(score);
 
                     }
                     if (blockBody.label != 'Box') {
@@ -299,10 +286,6 @@ class World1 extends Phaser.Scene {
                         bodylab = blockBody;
 
                     }
-
-                    //  You can get to the Sprite via `gameObject` property
-                    //var playerSprite = playerBody.gameObject;
-                    //var blockSprite = blockBody.gameObject;
                 }
             }
         });
@@ -320,7 +303,6 @@ class World1 extends Phaser.Scene {
 
         this.scoreboard.text = score+"/x";
         if(endgame){
-            console.log("whould appear once");
            
             this.cameras.main.fadeOut(1000, 0, 0, 0);
             
@@ -337,19 +319,13 @@ class World1 extends Phaser.Scene {
             this.scene.launch('PauseScreen');
             this.scene.pause();
         }
-        //console.log(canJump)
-        //  console.log(this.player.body.velocity.y+"one")
 
 
         if (butpres5) {
-<<<<<<< HEAD
-            
-=======
             if(this.soundp5){
                 this.gatesound.play();
                 this.soundp5= false;
             }
->>>>>>> 7c8c679f8beabc15a47733defb8bef4f842cc3b6
             if (this.plat6.y < 56 * 32 + 12 ) {
               //  this.gatesound.stop();
                 butpres5 = false;
@@ -360,14 +336,10 @@ class World1 extends Phaser.Scene {
             }
         }
         if (butpres4) {
-<<<<<<< HEAD
-=======
-            console.log("HIIIII2");
             if(this.soundp4){
                 this.gatesound.play();
                 this.soundp4= false;
             }
->>>>>>> 7c8c679f8beabc15a47733defb8bef4f842cc3b6
             if (this.plat4.x > 13 * 32 + 16) {
                 if (this.plat5.y < 52 * 32+12){
                     this.plat5.y++;
@@ -395,7 +367,7 @@ class World1 extends Phaser.Scene {
                 this.gatesound.play();
                 this.soundp2= false;
             }
-            console.log("amogus");
+            
             if (this.plat2.x < 12 + 2 * 32) {
                 butpres2 = false;
             }
@@ -403,16 +375,12 @@ class World1 extends Phaser.Scene {
                 this.plat2.x--;
             }
         }
-        console.log(this.plat1.x);
         if (butpres1) {
-           /// console.log("amogus");
             if(this.soundp1){
-                console.log("sussyballs");
                 this.gatesound.play();
                 this.soundp1= false;
             }
             if (this.plat1.y < 0 + 5 * 32) {
-                 //this.gatesound.stop();
                 butpres1 = false;
             }
             else {
@@ -456,7 +424,6 @@ class World1 extends Phaser.Scene {
             }
 
             if (flipstat === false && grabdown === false) {
-                // console.log(this.player.flip+"amongus");
                 this.player.flipX = false;
                 flipstat = true;
             }
@@ -486,9 +453,6 @@ class World1 extends Phaser.Scene {
         }
         if (Math.abs(this.player.body.velocity.y) >= 1) {
             canJump = false;
-            // console.log(this.player.body.velocity.y+"one")
-            //  canJump = true;
-            //  console.log(canJump+"two")
         }
 
         if (this.cursors.shift.isDown && ((cangrabl === true && flipstat === false) || (cangrabr === true && flipstat === true)) && bodylab.gameObject != null && bottomlab.gameObject != bodylab.gameObject) {
@@ -496,8 +460,6 @@ class World1 extends Phaser.Scene {
 
             this.matter.body.setInertia(bodylab.gameObject.body, Infinity);
 
-            // this.grabjoint.push( this.matter.add.joint(this.player.body,bodylab.gameObject.body,100,.2,{label:"kicked like a mule"}));
-            // if(this.player.body.velocity) 
             bodylab.gameObject.setVelocityX(this.player.body.velocity.x);
 
             bodylab.gameObject.setVelocityY(this.player.body.velocity.y);
@@ -506,13 +468,7 @@ class World1 extends Phaser.Scene {
         }
 
         if (this.cursors.shift.isUp && grabdown === true) {
-            //  console.log(bodylab.gameObject.body.inertia)
             this.matter.body.setInertia(bodylab.gameObject.body, 73600.4);
-            //  console.log(this.grabjoint[0].label +"bro");
-            // this.matter.world.removeConstraint(this.grabjoint[0]);
-            //this.grabjoint.pop();
-            //console.log(this.grabjoint.label +"burro");
-            //this.matter.world.destroy(this.grabjoint);
 
             cangrabl = false;
             cangrabr = false;

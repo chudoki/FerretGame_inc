@@ -28,6 +28,11 @@ class World1 extends Phaser.Scene {
 
     create() {
         score = 0;
+        let soundp1 = true;
+ let soundp2 =true;
+let soundp3 = true;
+let soundp4 =true;
+let soundp5 = true;
         let scoreConfig = {
             fontFamily: 'Arial',
             fontSize: '28px',
@@ -68,8 +73,8 @@ class World1 extends Phaser.Scene {
         this.exitTrigger = false;
         //background music
 
-        this.bgm = this.sound.add('sunnyMorning', { loop: true, volume: 0.3 });
-        
+        this.bgm = this.sound.add('sunnyMorning', { loop: true, volume: 0.1 });
+        this.gatesound = this.sound.add('gateServo',{loop: false,volume: 0.8});
         this.bgm.play();
 
         // input keys
@@ -197,7 +202,7 @@ class World1 extends Phaser.Scene {
                // this.scene.pause();
             }
         });
-
+        
         //collision callback
         this.matter.world.on('collisionactive', function (event) {
             //  Loop through all of the collision pairs
@@ -316,7 +321,12 @@ class World1 extends Phaser.Scene {
 
 
         if (butpres5) {
+            if(soundp5){
+                this.gatesound.play();
+                soundp5= false;
+            }
             if (this.plat6.y < 56 * 32 + 12 ) {
+              //  this.gatesound.stop();
                 butpres5 = false;
             }
             else {
@@ -325,6 +335,10 @@ class World1 extends Phaser.Scene {
         }
         if (butpres4) {
             console.log("HIIIII2");
+            if(soundp4){
+                this.gatesound.play();
+                soundp4= false;
+            }
             if (this.plat4.x > 13 * 32 + 16) {
                 if (this.plat5.y < 52 * 32+12){
                     this.plat5.y++;
@@ -336,6 +350,10 @@ class World1 extends Phaser.Scene {
             }
         }
         if (butpres3) {
+            if(soundp3){
+                this.gatesound.play();
+                soundp3= false;
+            }
             if (this.plat3.x < 20 * 32 + 16) {
                 butpres3 = false;
             }
@@ -344,6 +362,10 @@ class World1 extends Phaser.Scene {
             }
         }
         if (butpres2) {
+            if(soundp2){
+                this.gatesound.play();
+                soundp2= false;
+            }
             console.log("amogus");
             if (this.plat2.x < 12 + 2 * 32) {
                 butpres2 = false;
@@ -354,7 +376,14 @@ class World1 extends Phaser.Scene {
         }
         console.log(this.plat1.x);
         if (butpres1) {
+           /// console.log("amogus");
+            if(soundp1){
+                console.log("sussyballs");
+                this.gatesound.play();
+                soundp1= false;
+            }
             if (this.plat1.y < 0 + 5 * 32) {
+                 //this.gatesound.stop();
                 butpres1 = false;
             }
             else {

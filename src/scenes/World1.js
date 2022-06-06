@@ -8,8 +8,9 @@ class World1 extends Phaser.Scene {
         this.load.image('ferret', 'assets/sprites/ferret player.png');
         this.load.image('platform', 'assets/sprites/platform.png');
         this.load.image('platform', 'assets/sprites/platform.png');
-        this.load.image('platformLg', 'assets/sprites/platformLg.png');
         this.load.atlas('sheet', 'assets/atlases/matterObjects-0.png', 'assets/atlases/matterObjects.json');
+        this.load.image('orangeButton', 'assets/sprites/orangeButton.png');
+        this.load.image('orangeGate', 'assets/sprites/orangeGate.png');
         this.load.audio('sfx_bump', 'assets/bump.wav');
         this.load.json("shapes", "assets/physicsObjects.json");
         this.load.tilemapTiledJSON("map", "assets/tiledV2.json");
@@ -17,9 +18,9 @@ class World1 extends Phaser.Scene {
             "tileset",
             "assets/tileset.png"
         );
-        this.load.spritesheet('tilesheet',"assets/tileset.png",{
-            frameWidth:32,
-            frameHeight:32
+        this.load.spritesheet('tilesheet', "assets/tileset.png", {
+            frameWidth: 32,
+            frameHeight: 32
         });
         this.load.spritesheet('ferretW', 'assets/ferretWalk.png', { frameWidth: 50, frameHeight: 22 });
 
@@ -27,18 +28,18 @@ class World1 extends Phaser.Scene {
 
     create() {
         score = 0;
-let scoreConfig = {
-    fontFamily: 'Arial',
-    fontSize: '28px',
-    backgroundColor: '#FF0000',
-    color: '#843605',
-    align: 'right',
-    padding: {
-        top: 5,
-        bottom: 5,
-    },
-    fixedWidth: 100
-}
+        let scoreConfig = {
+            fontFamily: 'Arial',
+            fontSize: '28px',
+            backgroundColor: '#FF0000',
+            color: '#843605',
+            align: 'right',
+            padding: {
+                top: 5,
+                bottom: 5,
+            },
+            fixedWidth: 100
+        }
 
 
 
@@ -53,9 +54,8 @@ let scoreConfig = {
         this.width = map.width * 320;
         this.height = map.height * 320;
         this.grabjoint = [];
-        // for( let i = 200; i < this.width; i += 500){
 
-        this.matter.add.sprite(34 * 32, 9 * 32, 'sheet', 'Box.png', { shape: shapes.Box, restitution: .1, frictionAir: .01, name: 'elburro' }).setTint(99999);
+        
         //this.matter.add.sprite(29*32,9*32,'sheet','Button.png',{shape: shapes.Button, name:'button1'}).setStatic(true);
 
         layer1.setCollisionByProperty({ collides: true });
@@ -82,98 +82,113 @@ let scoreConfig = {
         // camera
         this.matter.world.setBounds(0, 0, this.width, this.height);
         this.cameras.main.setBounds(0, 0, this.width, this.height);
-        //bodies
-        this.foods = map.createFromObjects("Collectibles",{
+        
+        
+        // initializes the food collectables
+        this.foods = map.createFromObjects("Collectibles", {
             name: "food",
-            key:"tilesheet",
-            frame:6,
+            key: "tilesheet",
+            frame: 6,
             classType: Food
         });
-         
-        
 
-         this.foods.map((food)=>{
-            Phaser.Physics.Matter.Matter.Body.set(food.body,{
-                label:'foodbit'
-                
+
+        // creates collectable food collision bodies for detection and destruction
+        this.foods.map((food) => {
+            Phaser.Physics.Matter.Matter.Body.set(food.body, {
+                label: 'foodbit'
+
             })
-         });
-        this.toy = new Toy(this,0,1000,'sheet','Button.png')
-        Phaser.Physics.Matter.Matter.Body.set(this.toy.body,
-            {  label: ('toy'), inertia: Infinity, Static: true });
+        });
+        
+        
+        // missing toy which is the winning condition
+        this.toy = new Toy(this, 0, 1000, 'sheet', 'Button.png')
+        Phaser.Physics.Matter.Matter.Body.set(this.toy.body,{ label: ('toy'), inertia: Infinity, Static: true });
 
+        // scoreboard tracks number of collectibles
+        this.scoreboard = this.add.text(0, 0, 0 + "/x", scoreConfig).setScrollFactor(0);
+        
+        // player with multiple sensors on each side for collision detecting
         var Bodies = Phaser.Physics.Matter.Matter.Bodies;
         var rect = Bodies.rectangle(0, 0, 50, 22, { label: 'player' });
-        var rectangler = Bodies.rectangle(-30, 0, 14, 10, { isSensor: true, label: 'grableft' });
-        var rectanglel = Bodies.rectangle(30, 0, 14, 10, { isSensor: true, label: 'grabright' });
-
+        var rectangleR = Bodies.rectangle(-30, 0, 14, 10, { isSensor: true, label: 'grableft' });
+        var rectangleL = Bodies.rectangle(30, 0, 14, 10, { isSensor: true, label: 'grabright' });
         var rectangT = Bodies.rectangle(0, -16, 36, 28, { isSensor: true, label: 'top' });
         var rectangB = Bodies.rectangle(0, 16, 36, 28, { isSensor: true, label: 'bottom' });
-        this.scoreboard =this.add.text(0 , 0,0+"/x",scoreConfig).setScrollFactor(0); 
-        
         var compoundBody = Phaser.Physics.Matter.Matter.Body.create({
-            parts: [rect, rectangler, rectanglel, rectangT, rectangB],
+            parts: [rect, rectangleR, rectangleL, rectangT, rectangB],
             inertia: Infinity
         });
-
         this.player = this.matter.add.sprite(0, 0, 'ferretW', this.frames);
-
         this.player.setExistingBody(compoundBody);
-
         this.player.body.sleepThreshold = -1;
+
+        // camera tracks player
         this.cameras.main.startFollow(this.player);
+        
+        
+        // large set of balls for activating final button
+        this.matter.add.sprite(1.5 * 32, 15 * 32, 'sheet', 'rBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 })
+        this.matter.add.sprite(2.5 * 32, 15 * 32, 'sheet', 'gBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 })
+        this.matter.add.sprite(3.5 * 32, 15 * 32, 'sheet', 'bBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 })
+        this.matter.add.sprite(4.5 * 32, 15 * 32, 'sheet', 'oBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 })
+        this.matter.add.sprite(5.5 * 32, 15 * 32, 'sheet', 'pBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 })
+        this.matter.add.sprite(6.5 * 32, 15 * 32, 'sheet', 'rBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 })
+        this.matter.add.sprite(7.5 * 32, 15 * 32, 'sheet', 'gBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 })
+        this.matter.add.sprite(8.5 * 32, 15 * 32, 'sheet', 'bBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 })
+        this.matter.add.sprite(3 * 32, 16 * 32, 'sheet', 'oBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 })
+        this.matter.add.sprite(4 * 32, 16 * 32, 'sheet', 'pBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 })
+        this.matter.add.sprite(5 * 32, 16 * 32, 'sheet', 'rBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 })
+        this.matter.add.sprite(6 * 32, 16 * 32, 'sheet', 'gBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 })
+        this.matter.add.sprite(7 * 32, 16 * 32, 'sheet', 'oBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 })
+        this.matter.add.sprite(4 * 32, 17 * 32, 'sheet', 'pBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 })
+        this.matter.add.sprite(5 * 32, 17 * 32, 'sheet', 'rBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 })
+        this.matter.add.sprite(6 * 32, 17 * 32, 'sheet', 'gBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 })
+        this.matter.add.sprite(4.5 * 32, 18 * 32, 'sheet', 'bBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 })
+        this.matter.add.sprite(5.5 * 32, 18 * 32, 'sheet', 'oBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 })
+        this.matter.add.sprite(6.5 * 32, 18 * 32, 'sheet', 'pBall.png', { shape: shapes.gBall, name: 'ball', friction: 0.01 })
 
-        this.ball1 = this.matter.add.sprite(3*32,15*32,'sheet', 'gBall.png', { shape: shapes.gBall, name: 'ball' });
-        this.ball2 = this.matter.add.sprite(3*32,15*32,'sheet', 'gBall.png', { shape: shapes.gBall, name: 'ball' });
+        // creates boxes to touch buttons that trigger gates
+        this.box1 = new Box(this, 34 * 32, 9 * 32, 'sheet', 'Box.png', { shape: shapes.Box, restitution: .1, frictionAir: .01, name: 'elburro' }).setTint(99999);
+        Phaser.Physics.Matter.Matter.Body.set(this.box1.body, { label: ('Box') });
+        this.box2 = new Box(this, 32 * 32 + 16, 23 * 32, 'sheet', 'redBox.png', { shape: shapes.Box, restitution: .1, frictionAir: .01, name: 'elburro' }).setTint(99999);
+        Phaser.Physics.Matter.Matter.Body.set(this.box2.body, { label: ('Box') });
+        this.box3 = new Box(this, 56 * 32, 18 * 32, 'sheet', 'blueBox.png', { shape: shapes.Box, restitution: .1, frictionAir: .01, name: 'elburro' }).setTint(99999);
+        Phaser.Physics.Matter.Matter.Body.set(this.box3.body, { label: ('Box') });
+        this.box4 = new Box(this, 16 * 32, 60 * 32, 'sheet', 'greenBox.png', { shape: shapes.Box, restitution: .1, frictionAir: .01, name: 'elburro' }).setTint(99999);
+        Phaser.Physics.Matter.Matter.Body.set(this.box4.body, { label: ('Box') });
 
-        this.button1 = new Button (this,29 * 32, 10 * 32 - 5, 'sheet', 'Button.png', {name: 'button1' }).setStatic(true);
-        this.button2 = new Button (this,22 * 32, 29 * 32 - 5, 'sheet', 'redButton.png', {name: 'button2' }).setStatic(true);
-        this.button3 = new Button (this,29 * 32, 38 * 32 - 5, 'sheet', 'blueButton.png', {name: 'button3' }).setStatic(true);
+        // Buttons that need a Box to touch it to move gates (Platforms)
+        this.button1 = new Button(this, 29 * 32, 10 * 32 - 5, 'sheet', 'Button.png', { name: 'button1' }).setStatic(true);
+        Phaser.Physics.Matter.Matter.Body.set(this.button1.body, { label: ('button1'), inertia: Infinity, Static: true });
+        this.button2 = new Button(this, 22 * 32, 29 * 32 - 5, 'sheet', 'redButton.png', { name: 'button2' }).setStatic(true);
+        Phaser.Physics.Matter.Matter.Body.set(this.button2.body, { label: ('button2'), inertia: Infinity, Static: true });
+        this.button3 = new Button(this, 29 * 32, 38 * 32 - 5, 'sheet', 'blueButton.png', { name: 'button3' }).setStatic(true);
+        Phaser.Physics.Matter.Matter.Body.set(this.button3.body, { label: ('button3'), inertia: Infinity, Static: true });
+        this.button4 = new Button(this, 10 * 32, 69 * 32 - 5, 'sheet', 'greenButton.png', { name: 'button4' }).setStatic(true);
+        Phaser.Physics.Matter.Matter.Body.set(this.button4.body, { label: ('button4'), inertia: Infinity, Static: true });
+        this.button5 = new Button(this, 16 * 32+16, 58 * 32 - 5, 'orangeButton', 0, { name: 'button5' }).setStatic(true);
+        Phaser.Physics.Matter.Matter.Body.set(this.button5.body, { label: ('button5'), inertia: Infinity, Static: true });
+        
 
-
-
-
-
-
-
-        Phaser.Physics.Matter.Matter.Body.set(this.button1.body,
-            { label: ('button1'), inertia: Infinity, Static: true });
-
-         Phaser.Physics.Matter.Matter.Body.set( this.button2.body,
-            { label :('button2'),inertia:Infinity,Static:true});
-
-             Phaser.Physics.Matter.Matter.Body.set( this.button3.body,
-                 { label :('button3'),inertia:Infinity,Static:true});
-
-        // Phaser.Physics.Matter.Matter.Body.set( this.button4.body,
-        //     { label :('button4'),inertia:Infinity,Static:true});
-
-
-
-        this.plat1 = new Platform( this, 37*32 +28, 8*32+8, 'sheet', 'Gate.png', {name: 'plat1' }).setStatic(true).setAngle(90);
-        this.plat2 = new Platform( this, 5*32 +16, 19*32+16, 'sheet', 'redGate.png', {name: 'plat2' }).setStatic(true);
-        this.plat3 = new Platform( this, 23*32 +16, 38*32+12, 'sheet', 'blueGate.png', {name: 'plat3' }).setStatic(true);
-
-        // this.plat2 = new Platform(this, 200, 100, 'block', 0, { name: 'plat2' }).setStatic(true);
-        // this.plat3 = new Platform(this, 200, 150, 'block', 0, { name: 'plat3' }).setStatic(true);
-        // this.plat4 = new Platform(this, 200, 200, 'block', 0, { name: 'plat4' }).setStatic(true);
-        //Pause control
-
-        Phaser.Physics.Matter.Matter.Body.set(this.plat1.body,
-            { shape: shapes.Gate, label: ('plat1'), inertia: Infinity, Static: true });
-
-         Phaser.Physics.Matter.Matter.Body.set(this.plat2.body,
-         { label: ('plat2'), inertia: Infinity, Static: true });
-
-         Phaser.Physics.Matter.Matter.Body.set(this.plat3.body,
-             { label: ('plat3'), inertia: Infinity, Static: true });
-
-        // Phaser.Physics.Matter.Matter.Body.set(this.plat4.body,
-        //     { label: ('plat4'), inertia: Infinity, Static: true });
-
-        //this.plat1.on('pmove1',this.platmove);
+        // Gates (platforms) that move in response to a box pressing a button
+        this.plat1 = new Platform(this, 37 * 32 + 28, 8 * 32 + 8, 'sheet', 'Gate.png', { name: 'plat1' }).setStatic(true).setAngle(90);
+        Phaser.Physics.Matter.Matter.Body.set(this.plat1.body, { label: ('plat1'), inertia: Infinity, Static: true });
+        this.plat2 = new Platform(this, 5 * 32 + 16, 19 * 32 + 16, 'sheet', 'redGate.png', { name: 'plat2' }).setStatic(true);
+        Phaser.Physics.Matter.Matter.Body.set(this.plat2.body, { label: ('plat2'), inertia: Infinity, Static: true });
+        this.plat3 = new Platform(this, 23 * 32 + 16, 38 * 32 + 12, 'sheet', 'blueGate.png', { name: 'plat3' }).setStatic(true);
+        Phaser.Physics.Matter.Matter.Body.set(this.plat3.body, { label: ('plat3'), inertia: Infinity, Static: true });
+        this.plat4 = new Platform(this, 16 * 32 + 16, 55 * 32 + 12, 'sheet', 'greenGate.png', { name: 'plat4' }).setStatic(true);
+        Phaser.Physics.Matter.Matter.Body.set(this.plat4.body, { label: ('plat4'), inertia: Infinity, Static: true });
+        this.plat5 = new Platform(this, 37 * 32 + 16, 50 * 32+12, 'sheet', 'greenGate.png', { name: 'plat5' }).setStatic(true);
+        Phaser.Physics.Matter.Matter.Body.set(this.plat5.body, { label: ('plat5'), inertia: Infinity, Static: true });
+        this.plat6 = new Platform(this, 6 * 32, 59 * 32 + 12, 'orangeGate', 0, { name: 'plat6' }).setStatic(true).setAngle(90);
+        Phaser.Physics.Matter.Matter.Body.set(this.plat6.body, { label: ('plat6'), inertia: Infinity, Static: true });
 
 
+
+        // event for pausing scene
         this.events.on('resume', (scene, data) => {
             if (data) {
 
@@ -182,11 +197,10 @@ let scoreConfig = {
                 this.scene.pause();
             }
         });
-        //collision callback
 
+        //collision callback
         this.matter.world.on('collisionactive', function (event) {
             //  Loop through all of the collision pairs
-
             var pairs = event.pairs;
 
             for (var i = 0; i < pairs.length; i++) {
@@ -195,27 +209,24 @@ let scoreConfig = {
                 var bodyB = pairs[i].bodyB;
                 if (bodyA.isSensor === false && bodyB.isSensor === false) {
                     if (bodyA.label != 'player' && bodyB.label != 'player') {
+                        if (bodyA.label === 'button5' || bodyB.label === 'button5') {
+                            console.log("HIIIII");
+                            butpres5 = true;
+                        }
                         if (bodyA.label === 'button4' || bodyB.label === 'button4') {
-                            // bodyA.emit('pressed',this.plat4);
-                            // console.log(bodyA);
+                            console.log("HIIIII4");
                             butpres4 = true;
                         }
 
                         if (bodyA.label === 'button3' || bodyB.label === 'button3') {
-                            // bodyA.emit('pressed',this.plat4);
-                            // console.log(bodyA);
                             butpres3 = true;
                         }
 
                         if (bodyA.label === 'button2' || bodyB.label === 'button2') {
-                            // bodyA.emit('pressed',this.plat4);
-                            // console.log(bodyA);
                             butpres2 = true;
                         }
 
                         if (bodyA.label === 'button1' || bodyB.label === 'button1') {
-                            // bodyA.emit('pressed',this.plat4);
-                            // console.log(bodyA);
                             butpres1 = true;
                         }
                     }
@@ -230,48 +241,38 @@ let scoreConfig = {
                     if (bodyA.isSensor) {
                         blockBody = bodyB;
 
-                  //      console.log(blockBody.label);
+                        //      console.log(blockBody.label);
                         playerBody = bodyA;
                     }
                     else if (bodyB.isSensor) {
                         blockBody = bodyA;
 
-                      //  console.log(blockBody.label);
+                        //  console.log(blockBody.label);
                         playerBody = bodyB;
                     }
                     else {
                         continue;
                     }
-                    if(blockBody.label==='toy'){
-                       endgame=true;
+                    if (blockBody.label === 'toy') {
+                        endgame = true;
                     }
                     if (playerBody.label === 'bottom') {
                         //console.log("hullo"+canJump);
                         bottomlab = blockBody;
                         canJump = true;
                     }
-                    if(blockBody.label==='foodbit' && playerBody.label != 'top'){
+                    if (blockBody.label === 'foodbit' && playerBody.label != 'top') {
                         blockBody.gameObject.destroy();
-                       score++;
-                       console.log(score);
-                       
+                        score++;
+                        console.log(score);
+
                     }
-                    if (blockBody.label == 'Rectangle Body' || blockBody.label == 'Body') {
+                    if (blockBody.label != 'Box') {
                         continue;
                     }
                     if (playerBody.label === 'grableft' && flipstat === false && blockBody != null) {
                         cangrabl = true;
                         bodylab = blockBody;
-                        if (grabdown === true) {
-                            //     console.log("ball vel"+blockBody.gameObject.body.velocity.x);
-                            //     console.log("ball vel"+blockBody.gameObject.body.velocity.y);
-                            //    // blockBody.gameObject.setVelocityX( playerBody.gameObject.body.velocity.x);
-                            //     console.log("ball veldos"+blockBody.gameObject.body.velocity.x);
-                            //     console.log("ball veldos"+blockBody.gameObject.body.velocity.y);
-                            //   //  blockBody.gameObject.setVelocityY(blockBody,playerBody.velocity.y);
-                            //     console.log("ball veltres"+blockBody.gameObject.body.velocity.x);
-                            //     console.log("ball veltres"+blockBody.gameObject.body.velocity.y);
-                        }
                     }
                     if (playerBody.label === 'grabright' && flipstat === true && blockBody != null) {
 
@@ -293,12 +294,13 @@ let scoreConfig = {
     }
 
     update() {
-        this.scoreboard.text = score+"/x";
-        if(endgame){
+        this.scoreboard.text = score + "/x";
+        if (endgame) {
             this.scene.launch('VictoryScene');
             this.scene.stop();
         }
         if (!this.game_started) {
+            this.player.x = 64; 
             this.player.y = 200;
             this.game_started = true;
         }
@@ -308,40 +310,55 @@ let scoreConfig = {
         }
         //console.log(canJump)
         //  console.log(this.player.body.velocity.y+"one")
-        
 
+
+        if (butpres5) {
+            if (this.plat6.y < 56 * 32 + 12 ) {
+                butpres5 = false;
+            }
+            else {
+                this.plat6.y--;
+            }
+        }
         if (butpres4) {
-            // this.plat4.body.x++;
-            // console.log(this.plat4.body.x);
-            // this.plat4.x++;
+            console.log("HIIIII2");
+            if (this.plat4.x > 13 * 32 + 16) {
+                if (this.plat5.y < 52 * 32+12){
+                    this.plat5.y++;
+                }
+                this.plat4.x--;
+            }
+            else{
+                butpres4 = false;
+            }
         }
         if (butpres3) {
-            console.log("amogus");
-
+            if (this.plat3.x < 20 * 32 + 16) {
+                butpres3 = false;
+            }
+            else {
+                this.plat3.x--;
+            }
         }
         if (butpres2) {
             console.log("amogus");
-            if(this.plat2.x<12+2*32){
-                butpres2=false;
+            if (this.plat2.x < 12 + 2 * 32) {
+                butpres2 = false;
             }
-            else{
-                console.log("amogus");
-                //this.plat1.body.x++;
+            else {
                 this.plat2.x--;
             }
         }
         console.log(this.plat1.x);
         if (butpres1) {
-            if(this.plat1.y<0+5*32){
-                butpres1=false;
+            if (this.plat1.y < 0 + 5 * 32) {
+                butpres1 = false;
             }
-            else{
-                console.log("amogus");
-                //this.plat1.body.x++;
+            else {
                 this.plat1.y--;
             }
-            
-            
+
+
 
         }
         if (this.cursors.left.isDown) {
@@ -415,9 +432,9 @@ let scoreConfig = {
 
         if (this.cursors.shift.isDown && ((cangrabl === true && flipstat === false) || (cangrabr === true && flipstat === true)) && bodylab.gameObject != null && bottomlab.gameObject != bodylab.gameObject) {
 
-           
+
             this.matter.body.setInertia(bodylab.gameObject.body, Infinity);
-         
+
             // this.grabjoint.push( this.matter.add.joint(this.player.body,bodylab.gameObject.body,100,.2,{label:"kicked like a mule"}));
             // if(this.player.body.velocity) 
             bodylab.gameObject.setVelocityX(this.player.body.velocity.x);
@@ -427,7 +444,7 @@ let scoreConfig = {
             grabdown = true;
         }
 
-        if (this.cursors.shift.isUp && grabdown === true && bodylab.gameObject != null) {
+        if (this.cursors.shift.isUp && grabdown === true) {
             //  console.log(bodylab.gameObject.body.inertia)
             this.matter.body.setInertia(bodylab.gameObject.body, 73600.4);
             //  console.log(this.grabjoint[0].label +"bro");

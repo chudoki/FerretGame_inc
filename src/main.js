@@ -1,15 +1,14 @@
 
 let config = {
     type: Phaser.CANVAS,
-    width: 1640,
-    height: 1360,
+    width: 640,
+    height: 360,
     scene: [Menu,Level1,tutorial,World1,Credits,Pause,Victory],
     physics: {
         default: 'matter',
         matter: {
             gravity: {x: 0, y: 3},
-            debug: true,
-            fps: 10,
+            //debug: true,
             enableSleeping: true,
             setBounds: {
                 left: true,
@@ -42,6 +41,6 @@ let flipstat = false;
 let grabdown = false;
 let endgame = false;
 let bodylab,bottomlab;
-let butpres1,butpres2,butpres3,butpres4;
+let butpres1,butpres2,butpres3,butpres4, butpres5;
 let score = 10;
  

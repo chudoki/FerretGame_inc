@@ -28,11 +28,11 @@ class World1 extends Phaser.Scene {
 
     create() {
         score = 0;
-        let soundp1 = true;
- let soundp2 =true;
-let soundp3 = true;
-let soundp4 =true;
-let soundp5 = true;
+         this.soundp1 = true;
+  this.soundp2 =true;
+ this.soundp3 = true;
+ this.soundp4 =true;
+ this.soundp5 = true;
         let scoreConfig = {
             fontFamily: 'Arial',
             fontSize: '28px',
@@ -112,7 +112,7 @@ let soundp5 = true;
             {  label: ('toy'), inertia: Infinity, Static: true });
 
         // scoreboard tracks number of collectibles
-        this.scoreboard = this.add.text(0, 0, 0 + "/x", scoreConfig).setScrollFactor(0);
+        
         
         // player with multiple sensors on each side for collision detecting
         var Bodies = Phaser.Physics.Matter.Matter.Bodies;
@@ -191,7 +191,12 @@ let soundp5 = true;
         this.plat6 = new Platform(this, 6 * 32, 59 * 32 + 12, 'orangeGate', 0, { name: 'plat6' }).setStatic(true).setAngle(90);
         Phaser.Physics.Matter.Matter.Body.set(this.plat6.body, { label: ('plat6'), inertia: Infinity, Static: true });
 
-
+        this.cameras.main.once(Phaser.Cameras.Scene2D.Events.FADE_OUT_COMPLETE, (cam,effect)=>{
+            this.bgm.stop()
+          console.log("sus imposter");
+          this.scene.launch('VictoryScene')
+          this.scene.stop()
+      });
 
         // event for pausing scene
         this.events.on('resume', (scene, data) => {
@@ -297,16 +302,20 @@ let soundp5 = true;
         const layer2 = map.createLayer("Tile Layer 2", tileset, 0, 0);
         layer2.setCollisionByProperty({ collides: true });
         this.matter.world.convertTilemapLayer(layer2);
+        this.scoreboard = this.add.text(0, 0, 0 + "/x", scoreConfig).setScrollFactor(0);
     }
 
     update() {
         this.scoreboard.text = score+"/x";
         if(endgame){
+            console.log("whould appear once");
+           
+            this.cameras.main.fadeOut(1000, 0, 0, 0);
+            
             endgame=false;
-              this.bgm.stop();
-            this.scene.launch('VictoryScene');
-            this.scene.stop();
-        }
+        
+     
+    }
         if (!this.game_started) {
             this.player.x = 64; 
             this.player.y = 200;
@@ -321,9 +330,9 @@ let soundp5 = true;
 
 
         if (butpres5) {
-            if(soundp5){
+            if(this.soundp5){
                 this.gatesound.play();
-                soundp5= false;
+                this.soundp5= false;
             }
             if (this.plat6.y < 56 * 32 + 12 ) {
               //  this.gatesound.stop();
@@ -335,9 +344,9 @@ let soundp5 = true;
         }
         if (butpres4) {
             console.log("HIIIII2");
-            if(soundp4){
+            if(this.soundp4){
                 this.gatesound.play();
-                soundp4= false;
+                this.soundp4= false;
             }
             if (this.plat4.x > 13 * 32 + 16) {
                 if (this.plat5.y < 52 * 32+12){
@@ -350,9 +359,9 @@ let soundp5 = true;
             }
         }
         if (butpres3) {
-            if(soundp3){
+            if(this.soundp3){
                 this.gatesound.play();
-                soundp3= false;
+                this.soundp3= false;
             }
             if (this.plat3.x < 20 * 32 + 16) {
                 butpres3 = false;
@@ -361,10 +370,10 @@ let soundp5 = true;
                 this.plat3.x--;
             }
         }
-        if (butpres2) {
+        if (this.butpres2) {
             if(soundp2){
                 this.gatesound.play();
-                soundp2= false;
+                this.soundp2= false;
             }
             console.log("amogus");
             if (this.plat2.x < 12 + 2 * 32) {
@@ -377,10 +386,10 @@ let soundp5 = true;
         console.log(this.plat1.x);
         if (butpres1) {
            /// console.log("amogus");
-            if(soundp1){
+            if(this.soundp1){
                 console.log("sussyballs");
                 this.gatesound.play();
-                soundp1= false;
+                this.soundp1= false;
             }
             if (this.plat1.y < 0 + 5 * 32) {
                  //this.gatesound.stop();

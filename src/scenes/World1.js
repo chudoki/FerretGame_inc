@@ -261,7 +261,7 @@ class World1 extends Phaser.Scene {
                     else {
                         continue;
                     }
-                    if (blockBody.label === 'toy') {
+                    if (blockBody.label === 'toy' && endgame==null) {
                         endgame = true;
                     }
                     if (playerBody.label === 'bottom') {
@@ -328,7 +328,7 @@ class World1 extends Phaser.Scene {
             if (this.plat6.y < 56 * 32 + 12) {
                 //  this.gatesound.stop();
                 butpres5 = false;
-                platsound === true
+                
             }
             else {
                 this.plat6.y--;

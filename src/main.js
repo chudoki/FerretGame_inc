@@ -39,7 +39,7 @@ let cangrabl = false;
 let cangrabr = false;
 let flipstat = false;
 let grabdown = false;
-let endgame = false;
+let endgame ;
 let bodylab,bottomlab;
 let butpres1,butpres2,butpres3,butpres4, butpres5;
 let score = 10;

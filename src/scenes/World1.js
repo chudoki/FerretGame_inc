@@ -67,7 +67,9 @@ let scoreConfig = {
         this.playThud = false;
         this.exitTrigger = false;
         //background music
+
         this.bgm = this.sound.add('sunnyMorning', { loop: true, volume: 0.3 });
+        
         this.bgm.play();
 
         // input keys
@@ -178,8 +180,8 @@ let scoreConfig = {
             if (data) {
 
                 this.bgm.stop();
-                this.scene.start('PauseScreen');
-                this.scene.pause();
+                this.scene.start('Menu');
+               // this.scene.pause();
             }
         });
         //collision callback
@@ -297,6 +299,7 @@ let scoreConfig = {
         this.scoreboard.text = score+"/x";
         if(endgame){
             endgame=false;
+              this.bgm.stop();
             this.scene.launch('VictoryScene');
             this.scene.stop();
         }

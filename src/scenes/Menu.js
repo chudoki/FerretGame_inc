@@ -18,13 +18,14 @@ class Menu extends Phaser.Scene {
            this.button.setInteractive();
            this.howButton = this.add.image(game.canvas.width/2, game.canvas.height/1.9+this.button.height/2.2 , 'howToButton').setScale(.3);
            this.howButton.setInteractive();
+           
            // title
            this.add.text(game.canvas.width/2, game.canvas.height/5.5, "Hunt for ", {
-              fontFamily: 'KarmaticArcade',
+              fontFamily: 'FFFFORWA',
               fontSize: '16px',
               }).setOrigin(0.5,0);
            this.add.text(game.canvas.width/2, game.canvas.height/3.3, "the Ferret's Treasure", {
-              fontFamily: 'KarmaticArcade',
+              fontFamily: 'FFFFORWA',
               fontSize: '16px',
               }).setOrigin(0.5,0);
            //this.add.rectangle()

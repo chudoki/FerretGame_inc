@@ -1,7 +1,7 @@
 class Pause extends Phaser.Scene {
     preload(){
         this.load.image('playButton', 'assets/buttons/playButton.png');
-        this.load.image('menuButton', 'assets/buttons/menuButton.png');
+        this.load.image('pausemenuButton', 'assets/buttons/menuButton.png');
         this.load.image('PausedBanner', 'assets/PausedBanner.png');
     }
     constructor(){
@@ -19,7 +19,7 @@ class Pause extends Phaser.Scene {
         // buttons
         this.playButton = this.add.image(this.pauseText.x-this.pauseText.width/2+62, this.pauseText.y+62, 'playButton');
         this.playButton.setInteractive();
-        this.menuButton = this.add.image(this.pauseText.x+this.pauseText.width/2-62, this.pauseText.y+62, 'menuButton');
+        this.menuButton = this.add.image(this.pauseText.x+this.pauseText.width/2-62, this.pauseText.y+62, 'pausemenuButton');
         this.menuButton.setInteractive();
     }
 

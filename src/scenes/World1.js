@@ -6,7 +6,7 @@ class World1 extends Phaser.Scene {
     create() {
 
         // local variables
-        this.startingPos = { x: 2 * 32, y: 7*32};
+        this.startingPos = { x: 2 * 32, y: 7 * 32 };
         this.bg = this.add.image(0, 0, 'bg').setOrigin(0, 0);
         score = 0;
         this.soundp1 = true;
@@ -17,13 +17,13 @@ class World1 extends Phaser.Scene {
         this.game_started = false;
         this.frames = 0;
         this.grabjoint = [];
-        
+
         let scoreConfig = {
             fontFamily: 'FFFFORWA',
             fontSize: '16px',
             color: '#ffffff',
             align: 'right',
-            backgroundColor: '#31222c' ,
+            backgroundColor: '#31222c',
             padding: {
                 top: 5,
                 bottom: 5,
@@ -52,9 +52,9 @@ class World1 extends Phaser.Scene {
         //background music
         this.bgm = this.sound.add('sunnyMorning', { loop: true, volume: 0.1 });
         this.gatesound = this.sound.add('gateServo', { loop: false, volume: 0.8 });
-        if(bgmOn==false){
+        if (bgmOn == false) {
             this.bgm.play();
-            bgmOn=true;
+            bgmOn = true;
         }
 
         // input keys
@@ -233,7 +233,7 @@ class World1 extends Phaser.Scene {
                     else {
                         continue;
                     }
-                    if (blockBody.label === 'toy' && endgame==null) {
+                    if (blockBody.label === 'toy' && endgame == null) {
                         endgame = true;
                     }
                     if (playerBody.label === 'bottom') {
@@ -269,15 +269,15 @@ class World1 extends Phaser.Scene {
 
         // scoreboard tracks number of collectibles
         this.scoreboard = this.add.text(0, 0, 0 + "/22", scoreConfig).setScrollFactor(0);
-        this.scoreboardIcon = this.add.image(25, 20, 'Food',0).setScrollFactor(0).setOrigin(0.5, 0.5);
+        this.scoreboardIcon = this.add.image(25, 20, 'Food', 0).setScrollFactor(0).setOrigin(0.5, 0.5);
     }
 
     update() {
         // parralax bg logic
-        if(this.player.x>320+this.player.width && this.player.x<this.width-360+this.player.width){
+        if (this.player.x > 320 + this.player.width && this.player.x < this.width - 360 + this.player.width) {
             this.bg.x = -311 + (this.player.x) * .8445;
         }
-        if(this.player.y>180+this.player.height && this.player.y<this.height-180-this.player.height){
+        if (this.player.y > 180 + this.player.height && this.player.y < this.height - 180 - this.player.height) {
             this.bg.y = -180 + (this.player.y) * .7445;
         }
         this.scoreboard.text = score + "/22";
@@ -307,7 +307,7 @@ class World1 extends Phaser.Scene {
             if (this.plat6.y < 56 * 32 + 12) {
                 //  this.gatesound.stop();
                 butpres5 = false;
-                
+
             }
             else {
                 this.plat6.y--;

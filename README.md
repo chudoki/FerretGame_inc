@@ -1,9 +1,14 @@
 # FerretGame
-A group game for CMPM 120, ferret platforming name TBA
-TODO
+ARTG and CMPM 120: Artwork and SFX polish for Incomplete by Marlene Lopez
 
-make a blank long canvas with a camera frame that tracks player
-create a drag feature with the play
+Link to GitHub Pages Site:  https://chudoki.github.io/FerretGame_inc/
+Link to Repository:         https://github.com/chudoki/FerretGame_inc
 
-Physics for ferret player: 
-body follows path of head
+Changes Made:
+- More Art and Rework of Title Screen and Menu Banner
+- More Art and Rework of How-To Page
+- Rework of foodbit and hammock in tileset
+- Addition of jumping and dragging sfx
+- Rework of Background art of game: changed setting to a lived in bedroom 
+  furniture, knick knacks, shelves, and more colorful palette.
+- Rework of ferret animation art to better suit changes.

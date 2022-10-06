@@ -5,6 +5,9 @@ class Menu extends Phaser.Scene {
    preload() {
       this.load.audio('sunnyMorning', 'assets/SunnyMorning.wav')
       this.load.audio('gateServo', 'assets/gateservo.wav');
+      this.load.audio('eatsfx', 'assets/eatsfx.wav');
+      this.load.audio('jumpsfx', 'assets/jumpsfx.wav');
+      this.load.audio('slidesfx', 'assets/slidesfx.wav');
       this.load.image('startButton', 'assets/buttons/startButton.png');
       this.load.image('howToButton', 'assets/buttons/howToButton.png')
       //this.load.image('howToButton', 'assets/buttons/testingButton.png');

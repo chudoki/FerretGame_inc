@@ -388,6 +388,7 @@ class World1 extends Phaser.Scene {
             }
             if (this.cursors.up.isDown && canJump === true) {
                 this.player.setVelocityY(-14);
+                this.sound.play('jumpsfx', {volume: 0.3});
             }
         }
         else if (this.cursors.right.isDown) {
@@ -410,6 +411,7 @@ class World1 extends Phaser.Scene {
             this.frames = this.frames % 6;
             if (this.cursors.up.isDown && canJump === true) {
                 this.player.setVelocityY(-12);
+                this.sound.play('jumpsfx', {volume: 0.3});
             }
         }
         else {
@@ -427,6 +429,7 @@ class World1 extends Phaser.Scene {
 
         if ((this.cursors.up.isDown || this.cursors.space.isDown) && canJump === true) {
             this.player.setVelocityY(-14);
+            this.sound.play('jumpsfx', {volume: 0.3});
             canJump = false;
         }
         if (Math.abs(this.player.body.velocity.y) >= 1) {
@@ -441,6 +444,9 @@ class World1 extends Phaser.Scene {
             bodylab.gameObject.setVelocityX(this.player.body.velocity.x);
 
             bodylab.gameObject.setVelocityY(this.player.body.velocity.y);
+
+            this.sound.play('slidesfx', {volume: 0.01});
+
 
             grabdown = true;
         }

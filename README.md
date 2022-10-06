@@ -1,8 +1,9 @@
 # FerretGame
-ARTG and CMPM 120: Artwork and SFX polish for Incomplete by Marlene Lopez
 
-## Link to GitHub Pages Site:  https://chudoki.github.io/FerretGame_inc/
-## Link to Repository:         https://github.com/chudoki/FerretGame_inc
+### Link to GitHub Pages:  https://chudoki.github.io/FerretGame_inc/
+### Link to Repository:         https://github.com/chudoki/FerretGame_inc
+
+ARTG and CMPM 120: Artwork and SFX polish for Incomplete by Marlene Lopez
 
 Changes Made:
 - More Art and Rework of Title Screen and Menu Banner

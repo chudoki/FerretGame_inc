@@ -8,6 +8,7 @@ class Menu extends Phaser.Scene {
       this.load.audio('eatsfx', 'assets/eatsfx.wav');
       this.load.audio('jumpsfx', 'assets/jumpsfx.wav');
       this.load.audio('slidesfx', 'assets/slidesfx.wav');
+      this.load.audio('toysfx', 'assets/squeakytoy.wav');
       this.load.image('startButton', 'assets/buttons/startButton.png');
       this.load.image('howToButton', 'assets/buttons/howToButton.png')
       //this.load.image('howToButton', 'assets/buttons/testingButton.png');

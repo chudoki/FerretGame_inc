@@ -40,11 +40,11 @@ class Credits extends Phaser.Scene {
 
         this.credtext[2] = this.add.text(game.canvas.width / 2, game.canvas.height / 3.3 + spacing + 192, "CONCEPT / DISCUSSION / IDEATION\nSkyler Haataja\nDaniel Wild\nMarlene Lopez", CreditStyle).setOrigin(0.5);
         
-        this.credtext[3] = this.add.text(game.canvas.width / 2, game.canvas.height / 3.3 + spacing + 5*64, "ARTIST\nSkyler Haataja", CreditStyle).setOrigin(0.5);
+        this.credtext[3] = this.add.text(game.canvas.width / 2, game.canvas.height / 3.3 + spacing + 5*64, "ARTIST\nSkyler Haataja\nMarlene Lopez", CreditStyle).setOrigin(0.5);
 
         this.credtext[4] = this.add.text(game.canvas.width / 2, game.canvas.height / 3.3 + spacing + 7*64, "LEAD PROGRAMMER\nDaniel Wild", CreditStyle).setOrigin(0.5);
         this.credtext[5] = this.add.text(game.canvas.width / 2, game.canvas.height / 3.3 + spacing + 9*64, "LEVEL DESIGNER\nSkyler Haataja", CreditStyle).setOrigin(0.5);
-        this.credtext[6] = this.add.text(game.canvas.width / 2, game.canvas.height / 3.3 + spacing + 11*64, "BACKGROUND ARTIST\nSkyler Haataja\nMegan Tolbert", CreditStyle).setOrigin(0.5);
+        this.credtext[6] = this.add.text(game.canvas.width / 2, game.canvas.height / 3.3 + spacing + 11*64, "BACKGROUND ARTIST\nMarlene Lopez", CreditStyle).setOrigin(0.5);
         this.credtext[7] = this.add.text(game.canvas.width / 2, game.canvas.width / 3.3 +  spacing + 13*64, "Thank You\nFor Playing!", TYStyle).setOrigin(0.5);
         this.exit = false;
         // KB input

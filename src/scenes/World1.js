@@ -14,6 +14,7 @@ class World1 extends Phaser.Scene {
         this.soundp3 = true;
         this.soundp4 = true;
         this.soundp5 = true;
+        this.soundp6 = true;
         this.game_started = false;
         this.frames = 0;
         this.grabjoint = [];
@@ -241,8 +242,10 @@ class World1 extends Phaser.Scene {
                         canJump = true;
                     }
                     if (blockBody.label === 'foodbit' && playerBody.label != 'top') {
+
                         blockBody.gameObject.destroy();
                         score++;
+                    
 
                     }
                     if (blockBody.label != 'Box') {
@@ -445,7 +448,7 @@ class World1 extends Phaser.Scene {
 
             bodylab.gameObject.setVelocityY(this.player.body.velocity.y);
 
-            this.sound.play('slidesfx', {volume: 0.01});
+            this.sound.play('slidesfx', {volume: 0.009});
 
 
             grabdown = true;
